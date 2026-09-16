@@ -995,6 +995,591 @@ PLUS	Erbij	claude
 CD	Schijfje	claude
 CD	Schijf	claude
 CD	Compact (afk.)	claude
+SUB	Vervanger	claude
+SUB	Plaatsvervanger	claude
+SUB	Reserve	claude
+ADEM	Lucht	claude
+ADEM	Zucht	claude
+ADEM	Levensbron	claude
+MEET	Peilt	claude
+MEET	Bepaalt	claude
+MEET	Toont aan	claude
+BOM	Explosief	claude
+BOM	Projectiel	claude
+BOM	Voltreffer	claude
+FOX	Vosje	claude
+FOX	Jachthond	claude
+FOX	Danswijsje	claude
+OOR	Zintuig	claude
+OOR	Handvat	claude
+OOR	Lepeltje	claude
+BOD	Voorstel	claude
+BOD	Offerte	claude
+BOD	Zet	claude
+BOL	Rond	claude
+BOL	Bal	claude
+BOL	Broodje	claude
+KLUS	Karwei	claude
+KLUS	Klein werkje	claude
+KLUS	Taak	claude
+ROOS	Bloem	claude
+ROOS	Schilfers	claude
+ROOS	Middelpunt	claude
+RUIL	Ruzie	claude
+RUIL	Omwisseling	claude
+RUIL	Transactie	claude
+VOER	Dierenkost	claude
+VOER	Brok	claude
+VOER	Vulling	claude
+NUT	Baat	claude
+NUT	Waarde	claude
+NUT	Profijt	claude
+TAG	Label	claude
+TAG	Etiket	claude
+TAG	Markering	claude
+POND	Gewicht	claude
+POND	Brits geld	claude
+POND	500 gram	claude
+SARA	Meisjesnaam	claude
+SARA	Bijbelse vrouw	claude
+SARA	Aartsmoeder	claude
+TONG	Vis	claude
+TONG	Smaakorgaan	claude
+TONG	Plat visje	claude
+WANG	Konijn?	claude
+WANG	Gezichtsdeel	claude
+WANG	Kaak	claude
+BOT	Skeletdeel	claude
+BOT	Nors	claude
+BOT	Dood?	claude
+RUN	Toeloop	claude
+RUN	Draf	claude
+RUN	Series	claude
+GAVE	Talent	claude
+GAVE	Aanleg	claude
+GAVE	Geschenk	claude
+CV	Loopbaan (afk.)	claude
+CV	Levensloop	claude
+CV	Rekening	claude
+DOL	Gek	claude
+DOL	Uitzinnig	claude
+DOL	Roeisteun	claude
+KUS	Zoen	claude
+KUS	Aanraking	claude
+KUS	Smakker	claude
+LEF	Durf	claude
+LEF	Moed	claude
+LEF	Ballen	claude
+VOS	Roofdier	claude
+VOS	Sluwerd	claude
+VOS	Bontjas	claude
+FLAT	Etage	claude
+FLAT	Woonblok	claude
+FLAT	Complex	claude
+OUWE	Bejaarde	claude
+OUWE	Grijzaard	claude
+OUWE	Pa	claude
+PORT	Vrachtloon	claude
+PORT	Wijnsoort	claude
+PORT	Verzendkosten	claude
+RIJST	Graankorrel	claude
+RIJST	Pilafje	claude
+RIJST	Oosters eten	claude
+TRAM	Railvoertuig	claude
+TRAM	Openb vervoer	claude
+TRAM	Rijtuig	claude
+ZOET	Suikerig	claude
+ZOET	Lief	claude
+ZOET	Niet zuur	claude
+HAVE	Bezit	claude
+HAVE	Vee	claude
+HAVE	Bezitting	claude
+LEED	Verdriet	claude
+LEED	Smart	claude
+LEED	Pijn	claude
+SHOP	Winkel	claude
+SHOP	Zaak	claude
+SHOP	Boetiek	claude
+SLET	Del	claude
+SLET	Losbol	claude
+SLET	Snol	claude
+TANK	Vergaarbak	claude
+TANK	Pantservoertuig	claude
+TANK	Reservoir	claude
+TRIO	Drietal	claude
+TRIO	Muziekgroep	claude
+TRIO	Drieling	claude
+FIT	Gezond	claude
+FIT	Vitaal	claude
+FIT	In vorm	claude
+GSM	Mobieltje (afk.)	claude
+GSM	Telefoon	claude
+GSM	Handy	claude
+MOL	Knaagdier	claude
+MOL	Spion	claude
+MOL	Chem eenheid	claude
+VAT	Ton	claude
+VAT	Grip	claude
+VAT	Fust	claude
+KNIE	Gewricht	claude
+KNIE	Scharnier	claude
+KNIE	Been buiging	claude
+MAAS	Opening	claude
+MAAS	Rivier	claude
+MAAS	Steek	claude
+NEEN	Nee	claude
+NEEN	Afwijzing	claude
+NEEN	Ontkenning	claude
+NEST	Broeisel	claude
+NEST	Vogelhuis	claude
+NEST	Warboel	claude
+VALS	Onecht	claude
+VALS	Gemeen	claude
+VALS	Onzuiver	claude
+HEK	Omheining	claude
+HEK	Afscheiding	claude
+HEK	Slagboom	claude
+HER	Opnieuw	claude
+HER	Weer	claude
+HER	Wederom	claude
+TAL	Menigte	claude
+TAL	Hoeveelheid	claude
+TAL	Veel	claude
+WIJS	Verstandig	claude
+WIJS	Melodie	claude
+WIJS	Toonaard	claude
+BEEK	Stroompje	claude
+BEEK	Riviertje	claude
+BEEK	Waterloop	claude
+NAUW	Eng	claude
+NAUW	Smal	claude
+NAUW	Strak	claude
+NAZI	Fascist	claude
+NAZI	Extremist	claude
+NAZI	Duits fascist	claude
+SOLO	Alleen	claude
+SOLO	Apart	claude
+SOLO	Eigen optreden	claude
+VIES	Smerig	claude
+VIES	Vuil	claude
+VIES	Goor	claude
+VOEG	Naad	claude
+VOEG	Kit	claude
+VOEG	Overgang	claude
+WAUW	Uitroep	claude
+WAUW	Verbazing	claude
+WAUW	Verrast?	claude
+OS	Rund	claude
+OS	Trekdier	claude
+OS	Lastdier	claude
+KOU	Kilte	claude
+KOU	Kilheid	claude
+KOU	Winterse kilte	claude
+DOEK	Lap stof	claude
+DOEK	Scherm	claude
+DOEK	Canvas	claude
+GRAM	Eenheid	claude
+GRAM	Gewicht	claude
+GRAM	Bedroefd	claude
+ACT	Handeling	claude
+ACT	Optreden	claude
+ACT	Scène	claude
+BAN	Vloek	claude
+BAN	Gebied	claude
+BAN	Boycot	claude
+LIGA	Bond	claude
+LIGA	Verbond	claude
+LIGA	Klasse	claude
+LORD	Heer	claude
+LORD	Edelman	claude
+LORD	Britse titel	claude
+MEGA	Groot	claude
+MEGA	Enorm	claude
+MEGA	Kolossaal	claude
+ZOOM	Rand	claude
+ZOOM	Boord	claude
+VA	VS-staat (afk.)	claude
+VA	Virginia (afk.)	claude
+EIS	Vordering	claude
+EIS	Claim	claude
+EIS	Verzoek	claude
+PRE	Pluspunt	claude
+PRE	Bonus	claude
+PRE	Voordeel	claude
+LONG	Orgaan	claude
+LONG	In de borst	claude
+LONG	Ademweg	claude
+VERF	Kleurstof	claude
+VERF	Coating	claude
+VERF	Lak	claude
+AAP	Primaat	claude
+AAP	Dier	claude
+AAP	Klimdier	claude
+RAP	Snel	claude
+RAP	Vlot	claude
+RAP	Hiphop	claude
+CHAT	Kletsen	claude
+CHAT	Praten	claude
+CHAT	Gesprek	claude
+RIJEN	Reeksen	claude
+RIJEN	Linies	claude
+RIJEN	Gelederen	claude
+STAL	Schuur	claude
+STAL	Onderdak	claude
+STAL	Hok	claude
+TRUI	Pullover	claude
+TRUI	Sweater	claude
+TRUI	Wollen kleding	claude
+UK	Peuter	claude
+UK	Dreumes	claude
+UK	Kleintje	claude
+BON	Kwitantie	claude
+BON	Reçu	claude
+BON	Bekeuring	claude
+GIDS	Handboek	claude
+GIDS	Leidsman	claude
+GIDS	Cicerone	claude
+LOOK	Uiterlijk	claude
+LOOK	Stijl	claude
+LOOK	Voorkomen	claude
+MAAG	Orgaan	claude
+MAAG	Buik	claude
+MAAG	Pens	claude
+MUNT	Geldstuk	claude
+MUNT	Kruid	claude
+MUNT	Penning	claude
+PART	Deel	claude
+PART	Aandeel	claude
+PART	Portie	claude
+TAK	Twijg	claude
+TAK	Branche	claude
+TAK	Uitloper	claude
+FAIR	Eerlijk	claude
+FAIR	Billijk	claude
+FAIR	Sportief	claude
+FRIS	Schoon	claude
+FRIS	Koel	claude
+FRIS	Levendig	claude
+JAAP	Snee	claude
+JAAP	Houw	claude
+JAAP	Voornaam	claude
+SPOT	Reclame	claude
+SPOT	Lamp	claude
+SPOT	Hoon	claude
+PINK	Vinger	claude
+PINK	Kleur	claude
+PINK	Jong rund	claude
+STAM	Clan	claude
+STAM	Volk	claude
+STAM	Familie	claude
+DUN	Mager	claude
+DUN	IJl	claude
+DUN	Slank	claude
+HAM	Vleeswaar	claude
+HAM	Bil	claude
+HAM	Spek	claude
+KOE	Rund	claude
+KOE	Melkgever	claude
+KOE	Vrouwelijk rund	claude
+ANNO	In het jaar	claude
+ANNO	Gedateerd	claude
+ANNO	Vanaf	claude
+HEUS	Echt	claude
+HEUS	Werkelijk	claude
+HEUS	Hoffelijk	claude
+LUST	Begeerte	claude
+LUST	Verlangen	claude
+LUST	Zin	claude
+UI	Bolgewas	claude
+UI	Groente	claude
+UI	Keukenbol	claude
+FEL	Hevig	claude
+FEL	Fanatiek	claude
+FEL	Scherp	claude
+KAP	Bedekking	claude
+KAP	Afdak	claude
+KAP	Capuchon	claude
+PET	Cap	claude
+PET	Beroerd	claude
+PET	Kepie	claude
+VEE	Dieren	claude
+VEE	Kudde	claude
+VEE	Hoefdier	claude
+HANG	Neiging	claude
+HANG	Aandrang	claude
+HANG	Zwak	claude
+KOOR	Zanggroep	claude
+KOOR	Refrein	claude
+KOOR	Kerkdeel	claude
+LAMP	Licht	claude
+LAMP	Peer	claude
+LAMP	Lichtbron	claude
+ZEGE	Winst	claude
+ZEGE	Triomf	claude
+ZEGE	Succes	claude
+SA	Vooruit!	claude
+SA	Kom op!	claude
+SA	Hop!	claude
+HOL	Grot	claude
+HOL	Leeg	claude
+HOL	Nest	claude
+LEK	Ondicht	claude
+LEK	Gaatje	claude
+LEK	Scheurtje	claude
+HELM	Kap	claude
+HELM	Duingras	claude
+HELM	Beschermer	claude
+LUIK	Klep	claude
+LUIK	Belgische stad	claude
+LUIK	Deksel	claude
+OVEN	Bakruimte	claude
+OVEN	Fornuis	claude
+GOK	Kansspel	claude
+GOK	Waagstuk	claude
+GOK	Gissing	claude
+HALS	Nek	claude
+HALS	Keel	claude
+HALS	Nauw deel	claude
+HOED	Chapeau	claude
+HOED	Vilten kap	claude
+HOED	Sombrero	claude
+LUID	Hard	claude
+LUID	Lawaaiig	claude
+LUID	Schallend	claude
+NORM	Regel	claude
+NORM	Standaard	claude
+NORM	Maatstaf	claude
+OPZIJ	Terzijde	claude
+OPZIJ	Zijwaarts	claude
+OPZIJ	Aan de kant	claude
+SONG	Lied	claude
+SONG	Liedje	claude
+SONG	Nummer	claude
+STAF	Leiding	claude
+STAF	Personeel	claude
+STAF	Stok	claude
+DUIM	Vinger	claude
+DUIM	Inch	claude
+DUIM	Eerste vinger	claude
+ECHO	Weerklank	claude
+ECHO	Nagalm	claude
+MADE	Larve	claude
+MADE	Worm	claude
+MADE	Aasvreter	claude
+MENU	Kaart	claude
+MENU	Lijst	claude
+MENU	Gerechten	claude
+PAAL	Mast	claude
+PAAL	Stok	claude
+PAAL	Piket	claude
+ROOM	Crème	claude
+ROOM	Melkvet	claude
+ROOM	Vertrek	claude
+WARS	Afkerig	claude
+WARS	Tegen	claude
+WARS	Vies van	claude
+GIF	Venijn	claude
+GIF	Toxine	claude
+GIF	Plaatje	claude
+MAM	Moeder	claude
+MAM	Ma	claude
+SPA	Bronwater	claude
+SPA	Kuuroord	claude
+SPA	Wellness	claude
+MUIS	Knaagdier	claude
+MUIS	Klikker	claude
+MUIS	Aanwijzer	claude
+BI	Burundi (afk.)	claude
+BI	Landcode (afk.)	claude
+PUT	Kuil	claude
+PUT	Waterbron	claude
+PUT	Boorgat	claude
+GLAD	Egaal	claude
+GLAD	Vlak	claude
+GLAD	Glibberig	claude
+KOOI	Hok	claude
+KOOI	Cel	claude
+KOOI	Gevang	claude
+REET	Kont	claude
+REET	Spleet	claude
+REET	Bips	claude
+SPIN	Achtpoot	claude
+SPIN	Weefster	claude
+SPIN	Webmaker	claude
+TAPE	Plakband	claude
+TAPE	Kleefband	claude
+TAPE	Cassette	claude
+ZUUR	Wrang	claude
+ZUUR	Bits	claude
+ZUUR	Chemische stof	claude
+BIO	CV	claude
+BIO	Duurzaam	claude
+BIO	Organisch	claude
+BUIS	Pijp	claude
+BUIS	Kanaal	claude
+BUIS	Televisie	claude
+GROF	Ruw	claude
+GROF	Lomp	claude
+GROF	Bot	claude
+ITEM	Onderwerp	claude
+ITEM	Punt	claude
+ITEM	Object	claude
+KOOK	Bereid eten	claude
+KOOK	Stoof	claude
+KOOK	Bak	claude
+LEVE	Hoera voor	claude
+LEVE	Hoezee	claude
+LEVE	Applaus voor	claude
+NOVA	Nieuw	claude
+NOVA	Ontplofte ster	claude
+NOVA	Sterflits	claude
+TRIP	Reisje	claude
+TRIP	Uitstapje	claude
+TRIP	Roes	claude
+YANG	Mannelijk principe	claude
+YANG	Actief	claude
+YANG	Tegenpool	claude
+YOGA	Meditatie	claude
+YOGA	Rek oefening	claude
+YOGA	Asana	claude
+MAT	Kleedje	claude
+MAT	Dof	claude
+MAT	Moe	claude
+TOF	Goed	claude
+TOF	Leuk	claude
+TOF	Gaaf	claude
+WAL	Oever	claude
+WAL	Kant	claude
+WAL	Dijk	claude
+COLA	Frisdrank	claude
+COLA	Zwart drankje	claude
+DOEI	Tot ziens	claude
+DOEI	Dag	claude
+DOEI	Vaarwel	claude
+GENE	Die daar	claude
+GENE	Ginds	claude
+GENE	Aldaar	claude
+GROT	Spelonk	claude
+GROT	Holte	claude
+GROT	Rotsholte	claude
+HAAN	Kraaier	claude
+HAAN	Vogel	claude
+HAAN	Mannelijk dier	claude
+IRIS	Oogdeel	claude
+IRIS	Bloem	claude
+IRIS	Oogkleur	claude
+MUST	Vereiste	claude
+MUST	Noodzaak	claude
+MUST	Onmisbaar	claude
+POES	Kat	claude
+POES	Katje	claude
+POES	Lieve kat	claude
+TEEN	Voetdeel	claude
+TEEN	Kleine twijg	claude
+TEEN	Uiteinde voet	claude
+VEST	Mouwloos jasje	claude
+VEST	Gilet	claude
+VEST	Wollen jas	claude
+EGO	Ik	claude
+EGO	Zelfbeeld	claude
+EGO	Eigendunk	claude
+CASH	Contant	claude
+CASH	Baar geld	claude
+CASH	Chartaal	claude
+CHIP	Processor	claude
+CHIP	Snack	claude
+CHIP	Fiche	claude
+INKT	Pigment	claude
+INKT	Vloeistof	claude
+INKT	Kleurstof	claude
+NOOT	Toon	claude
+NOOT	Vrucht	claude
+NOOT	Opmerking	claude
+SAUS	Jus	claude
+SAUS	Dressing	claude
+SAUS	Topping	claude
+ALFA	Griekse letter	claude
+ALFA	Eerste letter	claude
+ALFA	Dominant	claude
+CREW	Bemanning	claude
+CREW	Team	claude
+CREW	Personeel	claude
+LIST	Truc	claude
+LIST	Streek	claude
+LIST	Sluwheid	claude
+SCAN	Aftasting	claude
+SCAN	Foto	claude
+SCAN	Onderzoek	claude
+OV	Vervoer (afk.)	claude
+OV	Bus/trein (afk.)	claude
+ABC	Alfabet	claude
+ABC	Basis	claude
+ABC	Letters	claude
+MAP	Ordner	claude
+MAP	Landkaart	claude
+MAP	Omslag	claude
+PIJP	Buis	claude
+PIJP	Slang	claude
+PIJP	Broekdeel	claude
+LEEN	Krediet	claude
+LEEN	Voorschot	claude
+LEEN	Hulpgeld	claude
+LENS	Brilglas	claude
+LENS	Objectief	claude
+LENS	Linze	claude
+STOK	Staf	claude
+STOK	Knuppel	claude
+STOK	Steun	claude
+TOUW	Koord	claude
+TOUW	Kabel	claude
+TOUW	Lijn	claude
+KI	Energie	claude
+KI	Bezieling	claude
+HIP	Trendy	claude
+HIP	Modieus	claude
+HIP	In	claude
+MIJL	Afstand	claude
+MIJL	1609 meter	claude
+MIJL	Engelse maat	claude
+RAM	Mannelijk schaap	claude
+RAM	Geheugen	claude
+RAM	Teken	claude
+BOOG	Wapen	claude
+BOOG	Gewelf	claude
+BOOG	Kromming	claude
+CASE	Geval	claude
+CASE	Hoes	claude
+CASE	Koffer	claude
+HAAK	Kromming	claude
+HAAK	Klem	claude
+HAAK	IJzeren pin	claude
+HALL	Vestibule	claude
+HALL	Foyer	claude
+HALL	Entree	claude
+HAVO	School (afk.)	claude
+HAVO	Onderwijs (afk.)	claude
+KOEN	Dapper	claude
+KOEN	Moedig	claude
+KOEN	Stoer	claude
+MI	Toonnaam	claude
+MI	Noot E	claude
+PR	Reclame (afk.)	claude
+PR	Pers (afk.)	claude
+CAO	Contract (afk.)	claude
+CAO	Akkoord (afk.)	claude
+REN	Loop!	claude
+REN	Kippenhok	claude
+REN	Baan	claude
+HALT	Stop!	claude
+HALT	Sta stil!	claude
+HALT	Genoeg!	claude
+ROER	Stuur	claude
+ROER	Besturing	claude
+ROER	Stuurblad	claude
+PO	Rivier in Italië	claude
+PO	Plasbak	claude
+BRAM	Voornaam	claude
+BRAM	Korte vorm	claude
 CAKE	Gebak	claude
 CAKE	Lekkernij	claude
 CAKE	Zoetigheid	claude

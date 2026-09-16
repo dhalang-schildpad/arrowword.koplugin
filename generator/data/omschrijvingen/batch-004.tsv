@@ -3,8 +3,8 @@ ADEM	Lucht	Zucht	Levensbron
 MEET	Peilt	Bepaalt	Toont aan
 BOM	Explosief	Projectiel	Voltreffer
 FOX	Vosje	Jachthond	Danswijsje
-OOR	Gehoororgaan	Handvat	Lepeltje
-BOD	Aanbod	Offerte	Zet
+OOR	Zintuig	Handvat	Lepeltje
+BOD	Voorstel	Offerte	Zet
 BOL	Rond	Bal	Broodje
 KLUS	Karwei	Klein werkje	Taak
 ROOS	Bloem	Schilfers	Middelpunt
@@ -25,10 +25,10 @@ KUS	Zoen	Aanraking	Smakker
 LEF	Durf	Moed	Ballen
 VOS	Roofdier	Sluwerd	Bontjas
 FLAT	Etage	Woonblok	Complex
-OUWE	Bejaarde	Ouwetje	Pa
+OUWE	Bejaarde	Grijzaard	Pa
 PORT	Vrachtloon	Wijnsoort	Verzendkosten
 RIJST	Graankorrel	Pilafje	Oosters eten
-TRAM	Railvoertuig	Openb vervoer	Sneltram
+TRAM	Railvoertuig	Openb vervoer	Rijtuig
 ZOET	Suikerig	Lief	Niet zuur
 HAVE	Bezit	Vee	Bezitting
 LEED	Verdriet	Smart	Pijn
@@ -49,3 +49,152 @@ HEK	Omheining	Afscheiding	Slagboom
 HER	Opnieuw	Weer	Wederom
 TAL	Menigte	Hoeveelheid	Veel
 WIJS	Verstandig	Melodie	Toonaard
+BEEK	Stroompje	Riviertje	Waterloop
+NAUW	Eng	Smal	Strak
+NAZI	Fascist	Extremist	Duits fascist
+SOLO	Alleen	Apart	Eigen optreden
+VIES	Smerig	Vuil	Goor
+VOEG	Naad	Kit	Overgang
+WAUW	Uitroep	Verbazing	Verrast?
+OS	Rund	Trekdier	Lastdier
+KOU	Kilte	Kilheid	Winterse kilte
+DOEK	Lap stof	Scherm	Canvas
+GRAM	Eenheid	Gewicht	Bedroefd
+ACT	Handeling	Optreden	Scène
+BAN	Vloek	Gebied	Boycot
+LIGA	Bond	Verbond	Klasse
+LORD	Heer	Edelman	Britse titel
+MEGA	Groot	Enorm	Kolossaal
+ZOOM	Rand	Boord
+VA	VS-staat (afk.)	Virginia (afk.)
+EIS	Vordering	Claim	Verzoek
+PRE	Pluspunt	Bonus	Voordeel
+LONG	Orgaan	In de borst	Ademweg
+VERF	Kleurstof	Coating	Lak
+AAP	Primaat	Dier	Klimdier
+RAP	Snel	Vlot	Hiphop
+CHAT	Kletsen	Praten	Gesprek
+RIJEN	Reeksen	Linies	Gelederen
+STAL	Schuur	Onderdak	Hok
+TRUI	Pullover	Sweater	Wollen kleding
+UK	Peuter	Dreumes	Kleintje
+BON	Kwitantie	Reçu	Bekeuring
+GIDS	Handboek	Leidsman	Cicerone
+LOOK	Uiterlijk	Stijl	Voorkomen
+MAAG	Orgaan	Buik	Pens
+MUNT	Geldstuk	Kruid	Penning
+PART	Deel	Aandeel	Portie
+TAK	Twijg	Branche	Uitloper
+FAIR	Eerlijk	Billijk	Sportief
+FRIS	Schoon	Koel	Levendig
+JAAP	Snee	Houw	Voornaam
+SPOT	Reclame	Lamp	Hoon
+PINK	Vinger	Kleur	Jong rund
+STAM	Clan	Volk	Familie
+DUN	Mager	IJl	Slank
+HAM	Vleeswaar	Bil	Spek
+KOE	Rund	Melkgever	Vrouwelijk rund
+ANNO	In het jaar	Gedateerd	Vanaf
+HEUS	Echt	Werkelijk	Hoffelijk
+LUST	Begeerte	Verlangen	Zin
+UI	Bolgewas	Groente	Keukenbol
+FEL	Hevig	Fanatiek	Scherp
+KAP	Bedekking	Afdak	Capuchon
+PET	Cap	Beroerd	Kepie
+VEE	Dieren	Kudde	Hoefdier
+HANG	Neiging	Aandrang	Zwak
+KOOR	Zanggroep	Refrein	Kerkdeel
+LAMP	Licht	Peer	Lichtbron
+ZEGE	Winst	Triomf	Succes
+SA	Vooruit!	Kom op!	Hop!
+HOL	Grot	Leeg	Nest
+LEK	Ondicht	Gaatje	Scheurtje
+HELM	Kap	Duingras	Beschermer
+LUIK	Klep	Belgische stad	Deksel
+OVEN	Bakruimte	Fornuis
+GOK	Kansspel	Waagstuk	Gissing
+HALS	Nek	Keel	Nauw deel
+HOED	Chapeau	Vilten kap	Sombrero
+LUID	Hard	Lawaaiig	Schallend
+NORM	Regel	Standaard	Maatstaf
+OPZIJ	Terzijde	Zijwaarts	Aan de kant
+SONG	Lied	Liedje	Nummer
+STAF	Leiding	Personeel	Stok
+DUIM	Vinger	Inch	Eerste vinger
+ECHO	Weerklank	Nagalm
+MADE	Larve	Worm	Aasvreter
+MENU	Kaart	Lijst	Gerechten
+PAAL	Mast	Stok	Piket
+ROOM	Crème	Melkvet	Vertrek
+WARS	Afkerig	Tegen	Vies van
+GIF	Venijn	Toxine	Plaatje
+MAM	Moeder	Ma
+SPA	Bronwater	Kuuroord	Wellness
+MUIS	Knaagdier	Klikker	Aanwijzer
+BI	Burundi (afk.)	Landcode (afk.)
+PUT	Kuil	Waterbron	Boorgat
+GLAD	Egaal	Vlak	Glibberig
+KOOI	Hok	Cel	Gevang
+REET	Kont	Spleet	Bips
+SPIN	Achtpoot	Weefster	Webmaker
+TAPE	Plakband	Kleefband	Cassette
+ZUUR	Wrang	Bits	Chemische stof
+BIO	CV	Duurzaam	Organisch
+BUIS	Pijp	Kanaal	Televisie
+GROF	Ruw	Lomp	Bot
+ITEM	Onderwerp	Punt	Object
+KOOK	Bereid eten	Stoof	Bak
+LEVE	Hoera voor	Hoezee	Applaus voor
+NOVA	Nieuw	Ontplofte ster	Sterflits
+TRIP	Reisje	Uitstapje	Roes
+YANG	Mannelijk principe	Actief	Tegenpool
+YOGA	Meditatie	Rek oefening	Asana
+MAT	Kleedje	Dof	Moe
+TOF	Goed	Leuk	Gaaf
+WAL	Oever	Kant	Dijk
+COLA	Frisdrank	Zwart drankje
+DOEI	Tot ziens	Dag	Vaarwel
+GENE	Die daar	Ginds	Aldaar
+GROT	Spelonk	Holte	Rotsholte
+HAAN	Kraaier	Vogel	Mannelijk dier
+IRIS	Oogdeel	Bloem	Oogkleur
+MUST	Vereiste	Noodzaak	Onmisbaar
+POES	Kat	Katje	Lieve kat
+TEEN	Voetdeel	Kleine twijg	Uiteinde voet
+VEST	Mouwloos jasje	Gilet	Wollen jas
+EGO	Ik	Zelfbeeld	Eigendunk
+CASH	Contant	Baar geld	Chartaal
+CHIP	Processor	Snack	Fiche
+INKT	Pigment	Vloeistof	Kleurstof
+NOOT	Toon	Vrucht	Opmerking
+SAUS	Jus	Dressing	Topping
+ALFA	Griekse letter	Eerste letter	Dominant
+CREW	Bemanning	Team	Personeel
+LIST	Truc	Streek	Sluwheid
+SCAN	Aftasting	Foto	Onderzoek
+OV	Vervoer (afk.)	Bus/trein (afk.)
+ABC	Alfabet	Basis	Letters
+MAP	Ordner	Landkaart	Omslag
+PIJP	Buis	Slang	Broekdeel
+LEEN	Krediet	Voorschot	Hulpgeld
+LENS	Brilglas	Objectief	Linze
+STOK	Staf	Knuppel	Steun
+TOUW	Koord	Kabel	Lijn
+KI	Energie	Bezieling
+HIP	Trendy	Modieus	In
+MIJL	Afstand	1609 meter	Engelse maat
+RAM	Mannelijk schaap	Geheugen	Teken
+BOOG	Wapen	Gewelf	Kromming
+CASE	Geval	Hoes	Koffer
+HAAK	Kromming	Klem	IJzeren pin
+HALL	Vestibule	Foyer	Entree
+HAVO	School (afk.)	Onderwijs (afk.)
+KOEN	Dapper	Moedig	Stoer
+MI	Toonnaam	Noot E
+PR	Reclame (afk.)	Pers (afk.)
+CAO	Contract (afk.)	Akkoord (afk.)
+REN	Loop!	Kippenhok	Baan
+HALT	Stop!	Sta stil!	Genoeg!
+ROER	Stuur	Besturing	Stuurblad
+PO	Rivier in Italië	Plasbak
+BRAM	Voornaam	Korte vorm
