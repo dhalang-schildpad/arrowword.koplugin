@@ -28,7 +28,7 @@ import time
 from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from woorden import MAX_REGELS, MAX_TEKENS, lees_vulwoorden, lees_woordenlijst, split_letters, wrap_omschrijving  # noqa: E402
+from woorden import DATA_DIR, MAX_REGELS, MAX_TEKENS, lees_vulwoorden, lees_woordenlijst, split_letters, wrap_omschrijving  # noqa: E402
 
 # Moeilijkheidstabel uit PLAN.md §5. `dichtheid` is het streefpercentage lettercellen.
 # Roostermaten volgen de vorm van het werkvlak op een Kobo Forma (bijna
@@ -58,9 +58,15 @@ class Woordenboek:
     """Woordenlijst met een index per (lengte, positie, letter)."""
 
     def __init__(self, max_rang=None, max_len=12, data_dir=None):
+        # handgeschreven omschrijvingen (vulwoorden.tsv) en de door Claude
+        # geschreven batches (omschrijvingen.tsv) gaan vóór Wiktionary
         hand = defaultdict(list)
-        for r in lees_vulwoorden(os.path.join(data_dir, "vulwoorden.tsv") if data_dir else None):
-            hand[r["woord"]].append(r["omschrijving"])
+        for naam in ("vulwoorden.tsv", "omschrijvingen.tsv"):
+            pad = os.path.join(data_dir or DATA_DIR, naam)
+            if os.path.exists(pad):
+                for r in lees_vulwoorden(pad):
+                    if r["omschrijving"] not in hand[r["woord"]]:
+                        hand[r["woord"]].append(r["omschrijving"])
         self.woorden = []
         # alleen omschrijvingen die in een cel passen; woorden zonder passende omschrijving vallen af
         for tekst, oms in hand.items():
