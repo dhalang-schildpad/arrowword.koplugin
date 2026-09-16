@@ -1,14 +1,14 @@
 REGEL	Zinsdeel	Voorschrift	Liniaal
 STOEL	Zitmeubel	Zitplaats
-WIJZEN	Aanwijzen	Aangeven
-GELEID	Aangestuurd	Begeleid
+WIJZEN	Duiden	Aangeven
+GELEID	Aangestuurd	Gestuurd
 LOSSEN	Afschieten	Uitladen
-BEZORGD	Ongerust	Bezorgd
+BEZORGD	Ongerust	Angstig
 EVENALS	Net als	Zoals ook
 ONLANGS	Kortgeleden	Laatst
-ONTSLAG	Ontheffing	Ontslagen
+ONTSLAG	Ontheffing	Congé
 REGELEN	Organiseren	Beredderen
-ZWANGER	In verwachting	Drachtig
+ZWANGER	Bolle buik	Drachtig
 JUSTITIE	Rechterlijke	Wetgeving?
 VLUCHTEN	Ontsnappen	Wegvliegen
 GEMIDDELD	Doorsnee	Modaal
@@ -36,14 +36,14 @@ PENSIOEN	Uittreding	Oudedagsgeld
 ZICHTBAAR	Waarneembaar	Duidelijk
 BEHANDELEN	Verwerken	Genezen
 VRIENDELIJK	Aardig	Hartelijk
-BEVEILIGING	Bewaking	Beveiliger
+BEVEILIGING	Bewaking	Protectie
 UITZONDERING	Afwijking	Bijzonderheid
 KANKER	Gezwel	Aandoening
 UITLEG	Toelichting	Verklaring
 ZAKKEN	Dalen	Falen
 AANSLAG	Terreurdaad	Toetsdruk
 LOGISCH	Vanzelfsprekend	Aannemelijk
-STUDENT	Scholier	Student
+STUDENT	Scholier	Cursist
 TEGELIJK	Gelijktijdig	Samen
 ZWEMBAD	Bassin	Badhuis
 BEVATTEN	Omvatten	Inhouden
@@ -61,25 +61,25 @@ LERAAR	Docent	Onderwijzer
 OPEENS	Plotseling	Ineens
 PAPIER	Document	Blaadje
 STILTE	Rust	Zwijgen
-BEHOREN	Toebehoren	Betamen
+BEHOREN	Toekomen	Betamen
 GEVECHT	Strijd	Kloppartij
 MONUMENT	Gedenkteken	Standbeeld
 TOERNOOI	Wedstrijd	Kampioenschap
 TRADITIE	Gewoonte	Overlevering
 VANMORGEN	Vanochtend	Deze ochtend
-VOORLOPIG	Tijdelijk	Vooralsnog
+VOORLOPIG	Tijdelijk	Interim
 LITERATUUR	Letterkunde	Boekenwerk
 HEDEN	Nu	Vandaag
 PARTY	Feestje	Fuif
 PLEIN	Marktveld	Open ruimte
 SMAAK	Aroma	Voorkeur
 VOGEL	Gevleugelde	Vlieger?
-ZICHT	Uitzicht	Doorkijk
-CENTER	Middelpunt	Centrum
+ZICHT	Blik	Doorkijk
+CENTER	Middelpunt	Kern
 DERTIG	Telwoord	Cijfer 30
-DUBBEL	Tweevoudig	Dubbelganger
+DUBBEL	Tweevoudig	Kopie
 HELDER	Klaar	Doorzichtig
-KLACHT	Grief	Aanklacht
+KLACHT	Grief	Bezwaar
 TANDEN	Kiezen	Gebit
 UPDATE	Bijwerking	Vernieuwing
 ANALYSE	Ontleding	Onderzoek
@@ -104,18 +104,18 @@ SCHERP	Puntig	Bijtend
 BESLIST	Zeker	Vastberaden
 OPSTAND	Rebellie	Oproer
 RECLAME	Advertentie	Aanprijzing
-SCHEPEN	Verschepen	Vervoeren
-STEUNEN	Kreunen	Ondersteunen
+SCHEPEN	Verzenden	Vervoeren
+STEUNEN	Kreunen	Helpen
 WEDEROM	Opnieuw	Andermaal
 BOERDERIJ	Hoeve	Landgoed
 UITERLIJK	Voorkomen	Aanzien
 VERMOGEN	Kapitaal	Bezit
-VOORKEUR	Preferentie	Voorliefde
+VOORKEUR	Preferentie	Wens
 VANOCHTEND	Deze ochtend	Vanmorgen
-STEEK	Prik	Naaisteek
+STEEK	Prik	Naald
 VILLA	Herenhuis	Buiten
 VOCHT	Nattigheid	Vloeistof
-BEDRAG	Som	Geldbedrag
+BEDRAG	Som	Totaal
 ERKEND	Officieel	Geaccepteerd
 HIERNA	Vervolgens	Straks
 HUILEN	Janken	Wenen
@@ -142,7 +142,7 @@ INGANG	Toegang	Entree
 MARINE	Zeemacht	Vloot
 PALEIS	Slot	Residentie
 VANGEN	Betrappen	Pakken
-GETUIGE	Ooggetuige	Omstander
+GETUIGE	Aanwezige	Omstander
 OPHALEN	Verzamelen	Innen
 REDELIJK	Tamelijk	Billijk
 SOLDAAT	Militair	Krijgsman
@@ -165,22 +165,22 @@ KLAGEN	Mopperen	Zeuren
 STRESS	Spanning	Druk
 ERFGOED	Nalatenschap	Cultuurgoed
 INKOMEN	Salaris	Verdienste
-WAARAAN	Aan wat	Waardoor
+WAARAAN	Aan wat	Vragend bw
 LANDBOUW	Akkerbouw	Agrarisch
 MAXIMAAL	Uiterst	Hoogstens
 PRINCIPE	Grondregel	Uitgangspunt
-OVERTUIGD	Zeker	Overtuigd?
+OVERTUIGD	Zeker	Verzekerd
 VERBORGEN	Onzichtbaar	Geheim
 ONTMOETING	Rendez-vous	Bijeenkomst
 VERDIEPING	Etage	Bouwlaag
 ONGELOOFLIJK	Bizar	Fenomenaal
-KOERS	Richting	Wisselkoers
+KOERS	Richting	Prijs
 BREKEN	Kraken	Vernielen
 CADEAU	Geschenk	Presentje
 DOMEIN	Terrein	Gebied
 GERUST	Onbezorgd	Kalm
 HIEROP	Daarop	Aansluitend
-MERKEN	Bespeuren	Bemerken
+MERKEN	Bespeuren	Voelen
 PASSIE	Hartstocht	Liefde
 SNEEUW	Winterpret	Vlokken
 TEKORT	Deficit	Schaarste
@@ -188,9 +188,9 @@ EXTREEM	Uiterst	Radicaal
 HOUDING	Pose	Postuur
 RELIGIE	Godsdienst	Geloof
 SYMBOOL	Zinnebeeld	Icoon
-VANDAAR	Daarom	Vandaar?
+VANDAAR	Daarom	Derhalve
 BEDENKEN	Verzinnen	Uitvinden
-GEBOORTE	Bevalling	Geboorte?
+GEBOORTE	Bevalling	Ontstaan
 GESLAAGD	Gelukt	Cum laude
 KAPITEIN	Gezagvoerder	Schipper
 SPRINGEN	Huppelen	Sprongen
@@ -224,14 +224,14 @@ GEVORMD	Ontstaan	Gemaakt
 MISDAAD	Delict	Overtreding
 PLAATJE	Afbeelding	Prentje
 BELANGEN	Aangaan	Raken
-GOEDKOOP	Voordelig	Spotgoedkoop
+GOEDKOOP	Voordelig	Spotprijs
 TOESTAND	Situatie	Gesteldheid
 VERSTAND	Intellect	Rede
 WANDELEN	Kuieren	Lopen
-ONBEKENDE	Vreemdeling	Onbekend iem
+ONBEKENDE	Vreemdeling	Passant
 ONTSNAPPEN	Ontkomen	Wegkomen
 SCHOONHEID	Pracht	Fraaiheid
-VERMOEDELIJK	Waarschijnlijk	Vermoedelijk?
+VERMOEDELIJK	Waarschijnlijk	Naar schatting
 BOODSCHAPPEN	Inkopen	Aankopen
 VOORSTELLING	Show	Beeldvorming
 APART	Afzonderlijk	Vreemd
@@ -245,7 +245,7 @@ BESLAG	Vloeideeg	Aanslag
 CURSUS	Leergang	Opleiding
 IMPACT	Effect	Invloed
 ELLENDE	Armoede	Misère
-MOORDEN	Ombrengen	Vermoorden
+MOORDEN	Ombrengen	Doden
 SLEUTEL	Slotopener	Oplossing
 ZOJUIST	Daarnet	Net
 BUSINESS	Zaken	Bedrijf
@@ -261,7 +261,7 @@ VOORZICHTIG	Behoedzaam	Omzichtig
 TEGENSTANDER	Rivaal	Opponent
 DRAMA	Treurspel	Tragedie
 TAKEN	Plichten	Klussen
-TANTE	Oudtante	Moei
+TANTE	Ouders zus	Moei
 ELFTAL	Voetbalteam	Ploeg
 OPNAME	Registratie	Storting
 STREEK	Regio	Grap
@@ -271,7 +271,7 @@ VARIANT	Uitvoering	Afwijking
 MISBRUIK	Wanbeheer	Exploitatie
 VERDRIET	Droefheid	Smart
 UITVOEREN	Exporteren	Volbrengen
-ZELFMOORD	Suïcide	Zelfdoding
+ZELFMOORD	Suïcide	Vrije dood
 PUBLICATIE	Uitgave	Bekendmaking
 VERSCHIJNEN	Opduiken	Uitkomen
 ALTERNATIEF	Optie	Keuzemogelijk
@@ -282,14 +282,14 @@ ZACHT	Teder	Mild
 FIGUUR	Gestalte	Personage
 GEDULD	Volharding	Lankmoedigheid
 LIEGEN	Jokken	Bedotten
-SCHERM	Beeldscherm	Monitor
+SCHERM	Display	Monitor
 WETTEN	Regels	Slijpen
 ZANGER	Vocalist	Crooner
 EXTERNE	Buitenstaander	Uitheems
 HERSTEL	Genezing	Reparatie
 OVERLEG	Beraad	Gesprek
 SALARIS	Loon	Bezoldiging
-VERRAST	Overrompeld	Verbaasd
+VERRAST	Onthutst	Verbaasd
 DANKBAAR	Erkentelijk	Verplicht
 PROMOTIE	Bevordering	Reclame
 DEELNEMEN	Meedoen	Participeren
@@ -297,4 +297,4 @@ TRANSPORT	Vervoer	Logistiek
 ZEKERHEID	Garantie	Onderpand
 LUCHTHAVEN	Vliegveld	Airport
 VERKRIJGBAAR	Leverbaar	Beschikbaar
-VEROORZAKEN	Teweegbrengen	Veroorzaken?
+VEROORZAKEN	Teweegbrengen	Stichten

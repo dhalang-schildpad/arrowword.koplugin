@@ -1,8 +1,8 @@
 SLAPEN	Rusten	Dromen	Pitten
-STUREN	Verzenden	Besturen	Richten
+STUREN	Verzenden	Dirigeren	Richten
 VERSIE	Uitvoering	Editie	Variant
 WAKKER	Ontwaakt	Niet slapend	Alert
-HEERLIJK	Heerlijk	Verrukkelijk	Uitstekend
+HEERLIJK	Lekker	Verrukkelijk	Uitstekend
 ONDANKS	Niettegenstaande	Hoewel	Toch
 STEMMEN	Kiezen	Klanken	Afstellen
 DAARNAAST	Bovendien	Tevens	Ook
@@ -24,7 +24,7 @@ ENERGIE	Kracht	Fut	Stroom
 SPREKEN	Praten	Converseren	Kletsen
 SITUATIE	Toestand	Positie	Stand van zaken
 ONTVANGEN	Krijgen	Verwelkomen	Verkrijgen
-KAART	Landkaart	Speelkaart	Menu
+KAART	Plattegrond	Ticket	Menu
 GEHEEL	Totaal	Compleet	Volledig
 VROEGER	Voorheen	Weleer	In het verleden
 GEBEUREN	Plaatsvinden	Voorvallen	Geschieden
@@ -32,21 +32,269 @@ VOORBEELD	Model	Staaltje	Illustratie
 GEZET	Fors	Stevig	Corpulent
 RADIO	Omroep	Zender	Ontvanger
 GEVOLG	Uitkomst	Resultaat	Effect
-GEZICHT	Aangezicht	Smoel	Voorkant
+GEZICHT	Tronie	Smoel	Voorkant
 KEUZE	Selectie	Optie	Besluit
 DRAGEN	Aanhebben	Torsen	Schragen
 KENNIS	Weten	Geleerde	Expertise
 GELEGEN	Passend	Geschikt	Gunstig
 PLEZIER	Genoegen	Pret	Lol
-GEVALLEN	Neergestort	Omlaag	Voorgevallen
+GEVALLEN	Neergestort	Omlaag	Voorvallen
 BETROKKEN	Aangedaan	Aangesloten	Deelnemend
 HOTEL	Logement	Pension	Herberg
 MARKT	Handelsplein	Afzet	Kraampjes
 ZOMER	Jaargetijde	Vakantietijd	Badseizoen
-ZWART	Duister	Zwartkleurig	Illegaal
+ZWART	Duister	Donker	Illegaal
 EERLIJK	Oprecht	Rechtvaardig	Rechtdoor
 LEGGEN	Plaatsen	Neerzetten	Deponeren
 RUSTIG	Kalm	Stil	Bedaard
-WINNEN	Overwinnen	Zegevieren	Verdienen
+WINNEN	Triomferen	Zegevieren	Verdienen
 CULTUUR	Beschaving	Traditie	Kunstwereld
 DAARVAN	Van dat	Ervan
+ECONOMIE	Geldwezen	Handel	Welvaart
+LUCHT	Atmosfeer	Dampkring	Geur
+PAKKEN	Grijpen	Nemen	Vangen
+GESPREK	Onderhoud	Dialoog	Interview
+PUBLIEK	Gehoor	Openbaar	Kijkers
+BIJZONDER	Speciaal	Uniek	Apart
+GENIETEN	Smullen	Smaken	Plezieren
+MAKKELIJK	Simpel	Eenvoudig	Licht
+VERSCHIL	Afwijking	Contrast	Nuance
+GEDURENDE	Tijdens	Terwijl	Al die tijd
+BRAND	Vuur	Vlammen	Inferno
+KUNST	Esthetiek	Kunde	Talent
+MOORD	Doodslag	Misdrijf	Delict
+SPORT	Beweging	Wedstrijd	Trede
+STELT	Poneert	Vraagt	Beweert
+STRIJD	Gevecht	Conflict	Kamp
+BEHALVE	Naast	Buiten	Anders dan
+INVLOED	Impact	Effect	Macht
+BEREIKEN	Halen	Behalen	Arriveren
+GESLACHT	Sekse	Kunne	Genus
+GELUK	Fortuin	Blijheid	Voorspoed
+MACHT	Kracht	Invloed	Gezag
+SUPER	Geweldig	Prima	Winkel
+WAARD	Geacht	Kastelein	Nuttig
+KOFFIE	Bakkie	Java	Moka
+MOEITE	Werk	Last	Poging
+PROCENT	Deel	Aandeel	Fractie
+TREKKEN	Sleuren	Rukken	Wandelen
+CONTROLE	Toezicht	Inspectie	Check
+ONTSTAAN	Beginnen	Ontkiemen	Geboorte
+AARDE	Grond	Wereld	Bodem
+FEEST	Party	Viering	Festijn
+WACHT	Bewaking	Post	Toezicht
+TEVENS	Ook	Bovendien	Daarnaast
+HUWELIJK	Trouwerij	Bruiloft	Verbond
+BEGRIJPEN	Snappen	Vatten	Doorzien
+GEVRAAGD	Gewild	Populair	Verzocht
+STAND	Positie	Houding	Kraam
+VORIG	Voorgaand	Eerder	Vroeger
+BIEDEN	Offreren	Aandragen	Bod doen
+BOUWEN	Oprichten	Optrekken	Metselen
+TERECHT	Gegrond	Gepast	Passend
+ERVARING	Belevenis	Routine	Praktijk
+BEVOLKING	Inwoners	Volk	Populatie
+RONDE	Omloop	Etappe	Toer
+KOSTEN	Vergen	Uitgaven	Prijs
+SCHULD	Debet	Blaam	Tekort
+OPDRACHT	Taak	Order	Missie
+VERLATEN	Weggaan	Desolaat	Eenzaam
+OPLOSSING	Antwoord	Uitkomst	Mengsel
+BURGEMEESTER	Baas	Hoofd	Stadsbaas
+GEZIN	Familie	Kroost	Nest
+STUUR	Volant	Handvat	Roer
+MENING	Oordeel	Standpunt	Visie
+NIVEAU	Peil	Rang	Klasse
+DRINKEN	Nuttigen	Slurpen	Innemen
+VERLEDEN	Voorheen	Historie	Vroeger
+JEUGD	Jongeren	Puberteit	Groen
+SCHIP	Vaartuig	Boot	Stoomboot
+AFSTAND	Interval	Verte	Ruimte
+FUNCTIE	Positie	Baan	Ambt
+PERFECT	Volmaakt	Feilloos	Ideaal
+PLANNEN	Beramen	Regelen	Ontwerpen
+RESPECT	Ontzag	Achting	Eerbied
+BLIJKBAAR	Zogenaamd	Kennelijk	Naar het schijnt
+FESTIVAL	Evenement	Feest	Optreden
+SPECIAAL	Bijzonder	Uniek	Apart
+BESCHERMEN	Behoeden	Vrijwaren	Hoeden
+ENORM	Immens	Kolossaal	Groots
+LIJKEN	Schijnen	Ogen	Aandoen
+PRAAT	Kletst	Kwebbelt	Spreekt
+ZWAAR	Log	Fors	Moeilijk
+MUSEUM	Galerie	Kunsthal	Expo
+OOSTEN	Oriënt	Levant
+SCHADE	Averij	Letsel	Nadeel
+MAANDAG	Weekdag	1e werkdag	Start week
+TOEGANG	Ingang	Entree	Toelating
+OVERZICHT	Beeld	Synopsis	Resumé
+BRIEF	Epistel	Schrijven	Missive
+HOPEN	Wensen	Verlangen	Stapels
+DAARBIJ	Bovendien	Tevens	Erbij
+STRAKS	Aanstonds	Weldra	Zo
+WEGENS	Door	Omwille van	Op grond van
+BETAALD	Voldaan	Vereffend	Bezoldigd
+NERGENS	Op geen plek	Helemaal niet
+POSITIE	Houding	Plaats	Functie
+SLUITEN	Dichtdoen	Afronden	Toedoen
+DAARVOOR	Ervoor	Voordien	Hiervoor
+HIERDOOR	Daardoor	Zodoende	Aldus
+LUISTEREN	Opletten	Horen	Volgen
+STEUN	Hulp	Stut	Uitkering
+BELLEN	Contact opnemen	Klokjes	Rinkelen
+MIDDEL	Manier	Medicijn	Taille
+WINKEL	Zaak	Boetiek	Filiaal
+HIERMEE	Daarmee	Ermee
+SERIEUS	Ernstig	Oprecht	Gemeend
+VERBAND	Zwachtel	Samenhang	Windsel
+DAGELIJKS	Alledaags	Elke dag	Iedere dag
+GENERAAL	Algemeen	Legerbaas
+OPTREDEN	Performen	Handelen	Show geven
+BEWIJS	Argument	Attest	Blijk
+BELEID	Aanpak	Strategie	Politiek
+BESTUUR	Directie	Raad	Leiding
+WEEKEND	Vrije dagen	Rustdagen
+BESLOTEN	Gesloten	Privé	Bepaald
+BEWEGING	Motie	Actie	Roering
+VERKOPEN	Slijten	Afzetten	Aanbieden
+RESULTAAT	Uitkomst	Gevolg	Eindstand
+REGELMATIG	Vaak	Periodiek	Steeds
+LIEVE	Dierbare	Schattig	Zoete
+SLAAN	Meppen	Timmeren	Ranselen
+ZOVER	Tot nu toe	Tot dusver	Voorlopig
+GEDRAG	Houding	Optreden	Conduite
+PROCES	Geschil	Verloop	Traject
+VOEREN	Voeden	Leiden	Bekleden
+KANTOOR	Bureau	Werkplek	Filiaal
+VRIJHEID	Autonomie	Ruimte	Privilege
+DIRECTEUR	Baas	Manager	Leider
+GEZONDHEID	Welzijn	Conditie	Fitheid
+FRANK	Moedig	Vrijuit	Munt
+TREIN	Wagons	Intercity	Spoorweg
+WAARDE	Prijs	Nut	Betekenis
+BEPAALD	Zeker	Specifiek	Precies
+NETWERK	Relaties	Systeem	Net
+STAPPEN	Wandelen	Uitgaan	Schreden
+OPLEIDING	Scholing	Training	Cursus
+VOORZITTER	Preses	Leider	Hoofd
+BLEEK	Vaal	Wit	Scheen
+ADVIES	Raad	Tip	Richtlijn
+JAMMER	Spijtig	Zonde	Helaas
+NATUUR	Milieu	Aard	Landschap
+WINNAAR	Kampioen	Held	Laureaat
+OPENBAAR	Publiek	Algemeen	Vrij
+OFFICIEEL	Formeel	Erkend	Ambtelijk
+VERDIENEN	Behalen	Toucheren	Waard zijn
+GRENS	Limiet	Scheiding	Rand
+WAPEN	Geweer	Blazoen	Middel
+RECHTS	Niet links	Behoudend
+RIVIER	Waterloop	Stroom	Beek
+BEKIJKEN	Bezien	Checken	Monsteren
+LOCATIE	Plek	Plaats	Positie
+STATION	Halte	Perron	Terminal
+VERKEERD	Fout	Onjuist	Mis
+DONDERDAG	Weekdag	4e werkdag
+KONINKRIJK	Rijk	Monarchie	Staat
+GEVANGENIS	Cel	Bajes	Nor
+ONDERTUSSEN	Intussen	Inmiddels
+ANGST	Vrees	Paniek	Schrik
+TAFEL	Bureau	Blad	Toonbank
+AANVAL	Offensief	Charge	Overval
+BUREAU	Werktafel	Kantoor	Instantie
+CAMERA	Toestel	Cam
+LEIDING	Directie	Gezag	Buis
+ADVOCAAT	Pleiter	Jurist	Raadsman
+TROUWENS	Overigens	Tussen haakjes	Toevallig
+VOORZIEN	Leveren	Vermoeden
+HOOFDSTAD	Centrum	Metropool
+INTERVIEW	Onderhoud	Gesprek
+MOMENTEEL	Nu	Actueel	Vandaag de dag
+VERLIEZEN	Missen	Derven	Inboeten
+TOESTEMMING	Fiat	Permissie
+GROEN	Onrijp	Onervaren	Milieu
+HALLO	Hoi	Dag	Hey
+MODEL	Voorbeeld	Prototype	Mannequin
+FINALE	Eindspel	Slotstuk
+GEVAAR	Risico	Onheil	Dreiging
+INHOUD	Volume	Betekenis	Materie
+REIZEN	Trekken	Toeren	Zwerven
+RISICO	Gevaar	Waagstuk	Kans
+STERKE	Krachtige	Stevige	Flinke
+WESTEN	Avondland	Occident
+PREMIER	Minister	Eerste minister
+VERENIGING	Club	Bond	Sociëteit
+ACHTERGROND	Decor	Verleden	Fond
+HIERBIJ	Bijgaand	Erbij
+INDRUK	Effect	Beeld	Impressie
+LASTIG	Moeilijk	Vervelend	Nukkig
+VLUCHT	Reis	Ontkoming
+ZOLANG	Terwijl	Mits	Als
+BESLUIT	Keuze	Decreet	Conclusie
+GERICHT	Gefocust	Bestemd
+OCHTEND	Morgen	Vroeg	Dagbegin
+DAARDOOR	Hierdoor	Zodoende	Om die reden
+COMMISSIE	Comité	Werkgroep	Raad
+KEREN	Draaien	Omslaan	Malen
+REDDEN	Bevrijden	Verlossen	Bergen
+ONGELUK	Botsing	Malheur	Pech
+SOCIAAL	Gezellig	Meelevend
+ABSOLUUT	Totaal	Volkomen	Beslist
+AFDELING	Divisie	Sectie	Team
+WOENSDAG	Weekdag	3e werkdag
+ONDERWERP	Thema	Kwestie	Materie
+MOGELIJKHEID	Kans	Optie
+TEKEN	Signaal	Symbool	Gebaar
+HIERVAN	Ervan	Daarvan
+NOORDEN	Boven	Bovenkant
+VERVOER	Transport	Verkeer
+REKENING	Factuur	Nota	Balans
+INCLUSIEF	Compleet met	Meegeteld
+VOORMALIG	Gewezen	Weleer
+AFLEVERING	Episode	Deel	Bezorging
+VOORSTELLEN	Opperen	Aandragen
+ZULKE	Zodanige	Dusdanige
+BEROEP	Vak	Baan	Appèl
+HUIZEN	Wonen	Herbergen	Woningen
+LEIDER	Baas	Kopstuk	Gids
+ACCOUNT	Profiel	Rekening
+HIERVOOR	Ervoor	Eerder
+BETREKKING	Baan	Functie	Relatie
+UITGEBREID	Ruim	Compleet	Groots
+KRANT	Dagblad	Courant
+NOGAL	Tamelijk	Vrij	Redelijk
+SLAAP	Rust	Sluimer	Dutje
+SLUIT	Dichtdoet	Eindigt	Klopt
+VLEES	Spier	Lijf
+AARDIG	Lief	Prettig	Gezellig
+ORANJE	Elftal	Mengkleur
+VIEREN	Herdenken	Gedenken	Fêteren
+VRIJWEL	Bijna	Nagenoeg	Zo goed als
+GELEERD	Belezen	Wijs	Erudiet
+KLEDING	Kleren	Outfit	Garderobe
+AFSPRAAK	Meeting	Deal	Consult
+TOEGEVOEGD	Aangevuld	Erbij gedaan	Extra
+BESCHERMING	Bewaking	Dekking	Hoede
+FANTASTISCH	Geweldig	Subliem	Super
+MAATSCHAPPIJ	Bedrijf	Firma
+ONDERZOEKEN	Natrekken	Checken
+OVERWINNING	Zege	Triomf	Succes
+SAMENLEVING	Bevolking	Wereld	Volk
+ALBUM	Plakboek	Fotoboek	Elpee
+ALDUS	Volgens	Zodoende	Zo
+NEGEN	Cijfer 9	Telwoord
+VREDE	Rust	Harmonie	Kalmte
+GELUID	Klank	Toon	Herrie
+LACHEN	Gniffelen	Grinniken	Schateren
+NEUKEN	Vrijen	Paren
+STRAND	Kust	Badplaats	Vloedlijn
+STUKJE	Hapje	Fragment	Column
+VREEMD	Raar	Bizar	Apart
+ZINGEN	Kwelen	Musiceren	Neuriën
+GEBOUWD	Gemaakt	Gemetseld	Opgericht
+ONTWERP	Plan	Blauwdruk	Schets
+BEZOEKEN	Langsgaan	Aandoen	Kwellen
+REGEN	Neerslag	Buien	Plensbui
+HONGER	Trek	Eetlust	Leegte
+SPELER	Deelnemer	Teamlid
+BENEDEN	Onder	Omlaag	Lager
+EENMAAL	Eens	Een keer	Op een dag
