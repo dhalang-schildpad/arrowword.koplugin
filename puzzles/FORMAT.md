@@ -66,5 +66,5 @@ Fouten:
 Waarschuwingen (kwaliteit, niet fataal):
 - lettercellen die maar in één woord zitten (percentage);
 - `X`-cellen (percentage);
-- omschrijvingen langer dan 2 regels van 12 tekens;
+- omschrijvingen langer dan 2 regels van 9 tekens (de celbreedte op een Kobo Forma bij 13 kolommen);
 - omschrijving bevat de stam van het antwoord.

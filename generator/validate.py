@@ -10,7 +10,7 @@ import sys
 
 DIRS = {"R": (1, 0), "D": (0, 1), "RD": (1, 0), "DR": (0, 1)}
 STEP = {"R": (1, 0), "D": (0, 1), "RD": (0, 1), "DR": (1, 0)}
-MAX_REGELS, MAX_TEKENS = 2, 12
+MAX_REGELS, MAX_TEKENS = 2, 9
 
 
 def split_letters(antwoord):

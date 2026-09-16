@@ -19,9 +19,8 @@ local T = require("ffi/util").template
 local Screen = Device.screen
 
 local KEY_ROWS = {
-    { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" },
-    { "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" },
-    { "U", "V", "W", "X", "Y", "Z", "IJ", "<", ">", "WIS" },
+    { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "IJ", "<" },
+    { "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "WIS", ">" },
 }
 
 local GameView = InputContainer:extend{
@@ -49,21 +48,35 @@ local function drawCentered(bb, x, y, w, h, face, text, color, bold)
     RenderText:renderUtf8Text(bb, tx, ty, face, text, true, bold or false, color or Blitbuffer.COLOR_BLACK, w)
 end
 
---- Breekt tekst op spaties in regels die in `width` passen.
+--- Breekt tekst in regels die in `width` passen. Een "\n" in de tekst
+-- dwingt een regeleinde af; verder wordt op spaties gebroken.
 -- @return regels, of nil als het niet in max_lines past
-local function wrap(face, text, width, max_lines)
-    local lines, line = {}, nil
-    for word in text:gmatch("%S+") do
-        local proef = line and (line .. " " .. word) or word
-        if textWidth(face, proef) <= width then
-            line = proef
-        else
-            if line then lines[#lines + 1] = line end
-            if textWidth(face, word) > width then return nil end
-            line = word
+local function wrap(face, text, width, max_lines, allow_hyphen)
+    local lines = {}
+    for alinea in (text .. "\n"):gmatch("(.-)\n") do
+        local line
+        for word in alinea:gmatch("%S+") do
+            local proef = line and (line .. " " .. word) or word
+            if textWidth(face, proef) <= width then
+                line = proef
+            else
+                if line then lines[#lines + 1] = line end
+                -- te lang woord: afbreken met koppelteken (alleen als dat mag)
+                if not allow_hyphen and textWidth(face, word) > width then return nil end
+                while textWidth(face, word) > width do
+                    local n = #word - 1
+                    while n > 1 and textWidth(face, word:sub(1, n) .. "-") > width do
+                        n = n - 1
+                    end
+                    if n < 2 then return nil end
+                    lines[#lines + 1] = word:sub(1, n) .. "-"
+                    word = word:sub(n + 1)
+                end
+                line = word
+            end
         end
+        if line then lines[#lines + 1] = line end
     end
-    if line then lines[#lines + 1] = line end
     if #lines > max_lines then return nil end
     return lines
 end
@@ -111,13 +124,17 @@ function GameView:init()
 
     self.letter_face = faceForPixels(self.cell * 0.62, true)
     self.small_face = faceForPixels(self.cell * 0.22)
+    -- omschrijvingen: aflopende reeks lettergroottes, van ~0.27 cel tot heel klein
     self.clue_faces = {}
-    for _, f in ipairs({ 0.24, 0.21, 0.18, 0.16 }) do
-        self.clue_faces[#self.clue_faces + 1] = faceForPixels(self.cell * f)
+    local scale = Screen:scaleBySize(1000) / 1000
+    local groot = math.max(6, math.floor(self.cell * 0.27 / scale))
+    for n = groot, 4, -1 do
+        self.clue_faces[#self.clue_faces + 1] = Font:getFace("cfont", n)
     end
     self.ui_face = Font:getFace("cfont", 20)
     self.title_face = Font:getFace("tfont", 22)
     self.key_face = Font:getFace("tfont", 24)
+    self.key_small_face = Font:getFace("cfont", 15)
 
     -- knoppen in de titelbalk (van rechts naar links)
     self.buttons = {}
@@ -281,34 +298,56 @@ end
 
 function GameView:paintClueCell(bb, r, c)
     local n = #c.oms
-    local pad = math.max(2, math.floor(self.cell * 0.06))
-    local arrow = math.max(4, math.floor(self.cell * 0.11))
+    local pad = math.max(2, math.floor(self.cell * 0.04))
+    local arrow = math.max(4, math.floor(self.cell * 0.10))
+    local heeft_d = false
+    for _, o in ipairs(c.oms) do
+        if o.dir ~= "R" then heeft_d = true end
+    end
     for i, o in ipairs(c.oms) do
-        local hy = r.y + (i - 1) * math.floor(r.h / n)
         local hh = (n == 1) and r.h or math.floor(r.h / n)
+        local hy = r.y + (i - 1) * hh
         if i == 2 then
             bb:paintRect(r.x, hy, r.w, Size.line.thin, Blitbuffer.COLOR_BLACK)
         end
-        local avail_w = r.w - 2 * pad - (o.dir == "R" and arrow * 2 or 0)
+        local avail_w = r.w - 2 * pad - (o.dir == "R" and math.floor(arrow * 1.5) or 0)
+        -- de pijl omlaag staat altijd tegen de onderrand van de cel
+        local onderste = (i == n)
+        local avail_h = hh - 2 * pad - ((onderste and heeft_d) and arrow or 0)
         local max_lines = (n == 1) and 4 or 2
-        local lines, face
-        for _, f in ipairs(self.clue_faces) do
-            local fh = f.ftsize:getHeightAndAscender()
-            local fit_lines = math.min(max_lines, math.floor((hh - 2 * pad) / fh))
-            lines = wrap(f, o.txt, avail_w, fit_lines)
-            if lines then face = f break end
+        -- eerst zonder afbreken (kleiner lettertype heeft de voorkeur boven een
+        -- koppelteken), daarna met afbreken
+        local lines, face, line_h
+        for _, hyphen in ipairs({ false, true }) do
+            for _, f in ipairs(self.clue_faces) do
+                local fh = f.ftsize:getHeightAndAscender()
+                local lh = math.ceil(fh * 0.88)
+                local fit_lines = math.min(max_lines, math.floor(avail_h / lh))
+                if fit_lines >= 1 then
+                    lines = wrap(f, o.txt, avail_w, fit_lines, hyphen)
+                    if lines then face, line_h = f, lh break end
+                end
+            end
+            if lines then break end
         end
         if not lines then
             face = self.clue_faces[#self.clue_faces]
+            line_h = math.ceil(face.ftsize:getHeightAndAscender() * 0.88)
             lines = { o.txt }
+            if os.getenv("ZP_DEBUGLOG") then
+                local f = io.open(os.getenv("ZP_DEBUGLOG"), "a")
+                f:write(string.format("past niet: %q dir=%s n=%d avail_w=%d avail_h=%d line_h=%d max_lines=%d\n",
+                    o.txt, o.dir, n, avail_w, avail_h, line_h, max_lines))
+                f:close()
+            end
         end
-        local fh, asc = face.ftsize:getHeightAndAscender()
-        local total = fh * #lines
-        local ty = hy + math.floor((hh - total) / 2)
+        local _, asc = face.ftsize:getHeightAndAscender()
+        local total = line_h * #lines
+        local ty = hy + pad + math.floor((avail_h - total) / 2)
         for _, line in ipairs(lines) do
             local tw = textWidth(face, line)
-            RenderText:renderUtf8Text(bb, r.x + pad + math.floor((avail_w - tw) / 2), ty + asc, face, line, true, false, Blitbuffer.COLOR_BLACK, avail_w)
-            ty = ty + fh
+            RenderText:renderUtf8Text(bb, r.x + pad + math.floor((avail_w - tw) / 2), ty + math.floor(asc * 0.88), face, line, true, false, Blitbuffer.COLOR_BLACK, avail_w)
+            ty = ty + line_h
         end
         if o.dir == "R" then
             drawArrow(bb, r.x + r.w - 2, hy + math.floor(hh / 2), "R", arrow, Blitbuffer.COLOR_BLACK)
@@ -325,7 +364,7 @@ function GameView:paintClue(bb)
     bb:paintRect(r.x, r.y, r.w, r.h, Blitbuffer.COLOR_WHITE)
     local w = p.current
     local pijl = w.horizontal and "→" or "↓"
-    local text = T("%1 %2  (%3)", pijl, w.oms, #w.letters)
+    local text = T("%1 %2  (%3)", pijl, w.oms:gsub("\n", " "), #w.letters)
     local fh, asc = self.ui_face.ftsize:getHeightAndAscender()
     RenderText:renderUtf8Text(bb, self.margin, r.y + math.floor((r.h - fh) / 2 + asc), self.ui_face, text, true, false, Blitbuffer.COLOR_BLACK, r.w - 2 * self.margin)
 end
@@ -337,7 +376,7 @@ function GameView:paintKeys(bb)
             local ky = self.keys_y + (ri - 1) * self.key_h
             local g = Size.margin.small
             bb:paintBorder(kx + g, ky + g, self.key_w - 2 * g, self.key_h - 2 * g, Size.border.default, Blitbuffer.COLOR_BLACK, Size.radius.default)
-            drawCentered(bb, kx, ky, self.key_w, self.key_h, self.key_face, k)
+            drawCentered(bb, kx, ky, self.key_w, self.key_h, #k > 2 and self.key_small_face or self.key_face, k)
         end
     end
 end

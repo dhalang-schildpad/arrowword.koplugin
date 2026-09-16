@@ -207,6 +207,13 @@ daar de basis voor.
 
 Fase 2 en 3 kunnen parallel; fase 2 heeft alleen fase 1 nodig.
 
+Status 2026-09-16: fase 0 (behalve installatie op de Forma), 1, 2 en 3 klaar.
+Bevindingen uit de emulator op Forma-resolutie: bij 13x18 zijn de cellen
+~76 px (6,5 mm); omschrijvingen passen alleen in 2 regels van ~9 tekens,
+vandaar de limiet in de generator. Als dat op het apparaat te klein blijkt,
+is 12x16 voor 4 sterren het alternatief. Omschrijvingen zijn nu nog ruw
+(Wiktionary-definities, automatisch ingekort), dat is fase 4.
+
 ## 9. Open vragen
 
 1. Licentie van de repo. Advies AGPL-3.0: kost niets, past bij

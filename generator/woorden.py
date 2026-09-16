@@ -7,7 +7,7 @@ import os
 import re
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-MAX_REGELS, MAX_TEKENS = 2, 12
+MAX_REGELS, MAX_TEKENS = 2, 9
 
 
 def split_letters(antwoord):
@@ -30,8 +30,13 @@ def wrap_omschrijving(tekst, max_regels=MAX_REGELS, max_tekens=MAX_TEKENS):
     """
     regels, huidige = [], ""
     for woord in tekst.split():
-        if len(woord) > max_tekens:
-            return None
+        # te lange woorden afbreken met een koppelteken, zoals de plugin ook doet
+        while len(woord) > max_tekens:
+            if huidige:
+                regels.append(huidige)
+                huidige = ""
+            regels.append(woord[:max_tekens - 1] + "-")
+            woord = woord[max_tekens - 1:]
         if not huidige:
             huidige = woord
         elif len(huidige) + 1 + len(woord) <= max_tekens:
