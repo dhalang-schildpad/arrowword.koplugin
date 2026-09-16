@@ -31,12 +31,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from woorden import MAX_REGELS, MAX_TEKENS, lees_vulwoorden, lees_woordenlijst, split_letters, wrap_omschrijving  # noqa: E402
 
 # Moeilijkheidstabel uit PLAN.md §5. `dichtheid` is het streefpercentage lettercellen.
+# Roostermaten volgen de vorm van het werkvlak op een Kobo Forma (bijna
+# vierkant: 1440 breed, ~1450 hoog na titelbalk, omschrijvingsbalk en
+# toetsenbord), zodat de cellen zo groot mogelijk worden.
 STERREN = {
-    1: dict(w=11, h=13, max_rang=5000, dichtheid=0.55, max_len=6),
-    2: dict(w=11, h=13, max_rang=5000, dichtheid=0.55, max_len=7),
-    3: dict(w=13, h=15, max_rang=15000, dichtheid=0.62, max_len=8),
-    4: dict(w=13, h=18, max_rang=30000, dichtheid=0.68, max_len=9),
-    5: dict(w=15, h=20, max_rang=None, dichtheid=0.72, max_len=10),
+    1: dict(w=10, h=11, max_rang=5000, dichtheid=0.55, max_len=6),
+    2: dict(w=11, h=12, max_rang=5000, dichtheid=0.55, max_len=7),
+    3: dict(w=12, h=13, max_rang=15000, dichtheid=0.62, max_len=8),
+    4: dict(w=13, h=14, max_rang=30000, dichtheid=0.68, max_len=9),
+    5: dict(w=14, h=15, max_rang=None, dichtheid=0.72, max_len=10),
 }
 
 LEEG, LETTER, BLOK = 0, 1, 2
@@ -510,6 +513,8 @@ def exporteer(rooster, wb, rng, titel, sterren):
     woorden, oms_per_cel = [], defaultdict(dict)
     for nr, (wid, (sx, sy, d, woord)) in enumerate(sorted(rooster.woorden.items(), key=sleutel), 1):
         txt = "\n".join(wrap_omschrijving(rng.choice(woord.oms)))
+        if txt.startswith("Ij"):  # IJ is één letter, dus ook als hoofdletter
+            txt = "IJ" + txt[2:]
         van = [sx - 1, sy] if d == R else [sx, sy - 1]
         oms_per_cel[van[1] * w + van[0]][RICHTING[d]] = txt
         woorden.append({"id": nr, "antwoord": woord.tekst, "oms": txt, "dir": RICHTING[d],

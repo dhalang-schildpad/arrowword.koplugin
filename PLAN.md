@@ -140,10 +140,15 @@ sterrenparameter die tegelijk stuurt:
 
 | Sterren | Rooster | Woordfrequentie | Dichtheid lettercellen | Omschrijvingen |
 |---|---|---|---|---|
-| 1-2 | 11x13 | alleen top-5k woorden | ~55% | letterlijk synoniem |
-| 3 | 13x15 | top-15k | ~62% | synoniem of definitie |
-| 4 | 13x18 | top-30k | ~68% | ook omschrijvende/indirecte |
-| 5 | 15x20 | volledige lijst | ~72% | indirect, met "?"-woordspelingen |
+| 1 | 10x11 | alleen top-5k woorden | ~55% | letterlijk synoniem |
+| 2 | 11x12 | top-5k | ~55% | letterlijk synoniem |
+| 3 | 12x13 | top-15k | ~62% | synoniem of definitie |
+| 4 | 13x14 | top-30k | ~68% | ook omschrijvende/indirecte |
+| 5 | 14x15 | volledige lijst | ~72% | indirect, met "?"-woordspelingen |
+
+Roosters zijn bijna vierkant omdat het werkvlak op de Forma dat ook is
+(besluit 2026-09-16 na de eerste test op het apparaat: bij 13x18 waren de
+cellen 83 px en de tekst te klein; bij 13x14 worden ze ~105 px).
 
 Elk woord krijgt daarvoor een frequentierang en elke omschrijving een
 moeilijkheidsniveau; de generator kiest per ster uit de passende laag.

@@ -19,8 +19,9 @@ local T = require("ffi/util").template
 local Screen = Device.screen
 
 local KEY_ROWS = {
-    { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "IJ", "<" },
-    { "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "WIS", ">" },
+    { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P" },
+    { "A", "S", "D", "F", "G", "H", "J", "K", "L", "IJ" },
+    { "Z", "X", "C", "V", "B", "N", "M", "WIS" },
 }
 
 local GameView = InputContainer:extend{
@@ -107,7 +108,7 @@ function GameView:init()
     self.margin = m
     self.title_h = Screen:scaleBySize(44)
     self.clue_h = Screen:scaleBySize(54)
-    self.key_h = Screen:scaleBySize(46)
+    self.key_h = Screen:scaleBySize(40)
     self.keys_h = self.key_h * #KEY_ROWS + m
 
     local p = self.puzzle
@@ -120,7 +121,14 @@ function GameView:init()
     self.clue_y = self.grid_y + self.grid_h + m
     self.keys_y = H - self.keys_h
     self.key_w = math.floor((W - 2 * m) / #KEY_ROWS[1])
-    self.keys_x = math.floor((W - self.key_w * #KEY_ROWS[1]) / 2)
+    self.row_x = {}
+    for i, row in ipairs(KEY_ROWS) do
+        self.row_x[i] = math.floor((W - self.key_w * #row) / 2)
+    end
+    -- pijltjes vorig/volgend woord in de omschrijvingsbalk
+    local aw = Screen:scaleBySize(44)
+    self.prev_rect = Geom:new{ x = m, y = self.clue_y + Screen:scaleBySize(4), w = aw, h = self.clue_h - Screen:scaleBySize(8) }
+    self.next_rect = Geom:new{ x = W - m - aw, y = self.clue_y + Screen:scaleBySize(4), w = aw, h = self.clue_h - Screen:scaleBySize(8) }
 
     self.letter_face = faceForPixels(self.cell * 0.62, true)
     self.small_face = faceForPixels(self.cell * 0.22)
@@ -206,8 +214,9 @@ end
 function GameView:keyAtPos(px, py)
     if py < self.keys_y then return nil end
     local row = math.floor((py - self.keys_y) / self.key_h) + 1
-    local col = math.floor((px - self.keys_x) / self.key_w) + 1
-    return KEY_ROWS[row] and KEY_ROWS[row][col] or nil
+    if not KEY_ROWS[row] then return nil end
+    local col = math.floor((px - self.row_x[row]) / self.key_w) + 1
+    return KEY_ROWS[row][col]
 end
 
 function GameView:wordRect(word)
@@ -364,15 +373,22 @@ function GameView:paintClue(bb)
     bb:paintRect(r.x, r.y, r.w, r.h, Blitbuffer.COLOR_WHITE)
     local w = p.current
     local pijl = w.horizontal and "→" or "↓"
-    local text = T("%1 %2  (%3)", pijl, w.oms:gsub("\n", " "), #w.letters)
+    -- afbrekingen uit de cel (koppelteken + regeleinde) weer aan elkaar
+    local oms = w.oms:gsub("%-\n", ""):gsub("\n", " ")
+    local text = T("%1 %2  (%3)", pijl, oms, #w.letters)
+    for __, br in ipairs({ { self.prev_rect, "<" }, { self.next_rect, ">" } }) do
+        bb:paintBorder(br[1].x, br[1].y, br[1].w, br[1].h, Size.border.button, Blitbuffer.COLOR_BLACK, Size.radius.button)
+        drawCentered(bb, br[1].x, br[1].y, br[1].w, br[1].h, self.key_face, br[2])
+    end
+    local tx = self.prev_rect.x + self.prev_rect.w + self.margin * 2
     local fh, asc = self.ui_face.ftsize:getHeightAndAscender()
-    RenderText:renderUtf8Text(bb, self.margin, r.y + math.floor((r.h - fh) / 2 + asc), self.ui_face, text, true, false, Blitbuffer.COLOR_BLACK, r.w - 2 * self.margin)
+    RenderText:renderUtf8Text(bb, tx, r.y + math.floor((r.h - fh) / 2 + asc), self.ui_face, text, true, false, Blitbuffer.COLOR_BLACK, self.next_rect.x - self.margin * 2 - tx)
 end
 
 function GameView:paintKeys(bb)
     for ri, row in ipairs(KEY_ROWS) do
         for ci, k in ipairs(row) do
-            local kx = self.keys_x + (ci - 1) * self.key_w
+            local kx = self.row_x[ri] + (ci - 1) * self.key_w
             local ky = self.keys_y + (ri - 1) * self.key_h
             local g = Size.margin.small
             bb:paintBorder(kx + g, ky + g, self.key_w - 2 * g, self.key_h - 2 * g, Size.border.default, Blitbuffer.COLOR_BLACK, Size.radius.default)
@@ -421,6 +437,14 @@ function GameView:onTap(_, ges)
             self:onButton(b.id)
             return true
         end
+    end
+    local punt = Geom:new{ x = px, y = py, w = 1, h = 1 }
+    if self.prev_rect:contains(punt) then
+        self:onKey("<")
+        return true
+    elseif self.next_rect:contains(punt) then
+        self:onKey(">")
+        return true
     end
     local cx, cy = self:cellAtPos(px, py)
     if cx then
