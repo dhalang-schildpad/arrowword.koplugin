@@ -12,7 +12,7 @@ Werkwijze per batch:
 
 ---
 
-Je schrijft omschrijvingen voor Nederlandse Zweedse puzzels, in de stijl van Denksport.
+Je schrijft omschrijvingen voor Nederlandse Zweedse puzzels, in de stijl van Denksport. Dit is één batch van 200 woorden uit een reeks van 12; ik plak straks in dit gesprek mogelijk nog meer batches, behandel elke batch op dezelfde manier.
 
 Hieronder staat een lijst met per regel: WOORD | huidige omschrijving. Het woord is het antwoord (hoofdletters, IJ telt als één letter). De huidige omschrijving is een automatisch ingekorte woordenboekdefinitie en is vaak slecht; gebruik hem alleen als hint voor de betekenis en negeer hem als hij onzin is.
 
@@ -20,7 +20,7 @@ Geef voor ELK woord, in dezelfde volgorde, precies één regel in dit formaat:
 
 WOORD | omschrijving 1 | omschrijving 2 | omschrijving 3
 
-Twee omschrijvingen is het minimum, drie is beter. Zet alle regels in één codeblok, zonder kopregel en zonder toelichting.
+Drie omschrijvingen per woord is het doel, twee is het minimum. Zet ALLE regels in één codeblok (platte tekst), zonder kopregel, zonder nummering en zonder toelichting erbuiten. Sla geen woord over en verander de woorden zelf niet; ik verwerk je antwoord automatisch met een script, dus de opmaak moet exact zijn. Als ik daarna foutmeldingen van het script terugplak, geef dan alleen de herstelde regels, ook weer in een codeblok.
 
 Regels:
 - Kort: liefst één of twee woorden. Maximaal 18 tekens, en geen enkel woord langer dan 9 tekens (de omschrijving wordt in een cel afgebroken op 2 regels van 9 tekens).
