@@ -1,0 +1,401 @@
+woord	omschrijving	bron
+DE	Lidwoord	claude
+DE	Bepaald lidwoord	claude
+VAN	Voorzetsel	claude
+VAN	Bezit tonend	claude
+EEN	Onbepaald lidwoord	claude
+EEN	Telwoord	claude
+EN	Voegwoord	claude
+EN	Plus	claude
+IN	Voorzetsel	claude
+IN	Gedurende	claude
+OP	Voorzetsel	claude
+OP	Uitgeput	claude
+IK	Persoonlijk vnw	claude
+IK	Ego	claude
+DAT	Voegwoord	claude
+DAT	Aanw. vnw	claude
+VOOR	Prepositie	claude
+VOOR	Leidend	claude
+JE	Persoonlijk vnw	claude
+JE	Bezittelijk vnw	claude
+TE	Voorzetsel	claude
+TE	Bijwoord	claude
+MET	Voorzetsel	claude
+MET	Tezamen	claude
+ZIJN	Wezen	claude
+ZIJN	Bezittelijk vnw	claude
+NIET	Ontkenning	claude
+NIET	Geenszins	claude
+DIE	Aanw. vnw	claude
+DIE	Betr. vnw	claude
+ALS	Voegwoord	claude
+ALS	Indien	claude
+ER	Bijwoord	claude
+ER	Aldaar	claude
+OM	Voorzetsel	claude
+OM	Teneinde	claude
+MAAR	Voegwoord	claude
+MAAR	Slechts	claude
+AAN	Voorzetsel	claude
+AAN	Actief	claude
+ZE	Persoonlijk vnw	claude
+ZE	Zij	claude
+OOK	Bijwoord	claude
+OOK	Eveneens	claude
+DOOR	Voorzetsel	claude
+DOOR	Via	claude
+UIT	Voorzetsel	claude
+UIT	Gedoofd	claude
+NAAR	Voorzetsel	claude
+NAAR	Onprettig	claude
+BIJ	Voorzetsel	claude
+BIJ	Insect	claude
+DAN	Voegwoord	claude
+DAN	Daarna	claude
+DIT	Aanw. vnw	claude
+DIT	Dichtbij	claude
+WAS	Bestond	claude
+WAS	Kaarsvet	claude
+WE	Persoonlijk vnw	claude
+WE	Wij	claude
+WAT	Vragend vnw	claude
+WAT	Enigszins	claude
+OF	Voegwoord	claude
+OF	Dan wel	claude
+OVER	Voorzetsel	claude
+OVER	Resterend	claude
+KAN	Vermag	claude
+KAN	Kruik	claude
+MEER	Extra	claude
+MEER	Plas	claude
+ZO	Bijwoord	claude
+ZO	Aldus	claude
+AL	Bijwoord	claude
+AL	Reeds	claude
+GEEN	Niet één	claude
+GEEN	Nihil	claude
+MIJN	Bezittelijk vnw	claude
+MIJN	Groeve	claude
+WEL	Inderdaad	claude
+WEL	Bron	claude
+TOT	Voorzetsel	claude
+TOT	Uiterlijk	claude
+NU	Bijwoord	claude
+NU	Heden	claude
+HAAR	Bezittelijk vnw	claude
+HAAR	Lok	claude
+BEN	Vorm van zijn	claude
+BEN	Eerste persoon	claude
+VEEL	Talrijk	claude
+VEEL	Enorm	claude
+ME	Persoonlijk vnw	claude
+ME	Mij	claude
+MOET	Is verplicht	claude
+MOET	Noodzaak	claude
+HOE	Vragend bw	claude
+HOE	Wijze waarop	claude
+NA	Voorzetsel	claude
+NA	Later dan	claude
+WAAR	Vragend bw	claude
+WAAR	Correct	claude
+WERD	Ontstond	claude
+WERD	Raakte	claude
+GOED	Prima	claude
+GOED	Bezit	claude
+WIL	Begeert	claude
+WIL	Wens	claude
+GAAN	Lopen	claude
+GAAN	Reizen	claude
+ONZE	Bezittelijk vnw	claude
+ONZE	Van ons	claude
+ZICH	Wederkerend vnw	claude
+ZICH	Zelf	claude
+DOEN	Uitvoeren	claude
+DOEN	Maken	claude
+HIER	Bijwoord	claude
+HIER	Ter plaatse	claude
+DUS	Voegwoord	claude
+DUS	Derhalve	claude
+MIJ	Persoonlijk vnw	claude
+MIJ	Ikzelf	claude
+HAD	Bezat	claude
+HAD	Verkreeg	claude
+TWEE	Telwoord	claude
+TWEE	Cijfer 2	claude
+WEER	Opnieuw	claude
+WEER	Klimaat	claude
+ZIEN	Kijken	claude
+ZIEN	Waarnemen	claude
+WIJ	Persoonlijk vnw	claude
+WIJ	Ons allen	claude
+ECHT	Puur	claude
+ECHT	Huwelijk	claude
+EENS	Ooit	claude
+EENS	Akkoord	claude
+DAAR	Ginds	claude
+DAAR	Omdat	claude
+HEEL	Compleet	claude
+HEEL	Zeer	claude
+TOCH	Evenwel	claude
+TOCH	Immers	claude
+DAG	Etmaal	claude
+DAG	Hallo	claude
+MEE	Samen	claude
+MEE	Erbij	claude
+ZIJ	Persoonlijk vnw	claude
+ZIJ	Ze	claude
+ALLE	Totaal	claude
+ALLE	Gans	claude
+IETS	Onbep. vnw	claude
+IETS	Wat	claude
+TOEN	Voegwoord	claude
+TOEN	Destijds	claude
+HEM	Persoonlijk vnw	claude
+HEM	Die man	claude
+JA	Tuurlijk	claude
+JA	Akkoord	claude
+WIE	Vragend vnw	claude
+WIE	Welke persoon	claude
+WEET	Beseft	claude
+WEET	Kent	claude
+NET	Precies	claude
+NET	Web	claude
+VIA	Voorzetsel	claude
+VIA	Langs	claude
+MAN	Kerel	claude
+MAN	Gemaal	claude
+EVEN	Kort	claude
+EVEN	Deelbaar door 2	claude
+AF	Klaar	claude
+AF	Voltooid	claude
+LAAT	's Avonds	claude
+LAAT	Op het eind	claude
+UUR	60 minuten	claude
+UUR	Tijdstip	claude
+BENT	Vorm van zijn	claude
+BENT	Tweede persoon	claude
+KEER	Maal	claude
+KEER	Draai	claude
+WEG	Route	claude
+WEG	Verdwenen	claude
+HELE	Complete	claude
+HELE	Totale	claude
+WERK	Baan	claude
+WERK	Klus	claude
+ZIT	Is gezeten	claude
+ZIT	Neemt plaats	claude
+DRIE	Telwoord	claude
+DRIE	Cijfer 3	claude
+ZELF	Eigen	claude
+ZELF	In eigen persoon	claude
+TOE	Gesloten	claude
+TOE	Als extra	claude
+SNEL	Vlug	claude
+SNEL	Vlot	claude
+DEEL	Portie	claude
+DEEL	Segment	claude
+HUIS	Woning	claude
+HUIS	Pand	claude
+WANT	Voegwoord	claude
+WANT	Touwwerk	claude
+ERG	Bijzonder	claude
+ERG	Naar	claude
+LAND	Natie	claude
+LAND	Staat	claude
+NAAM	Benaming	claude
+NAAM	Reputatie	claude
+STAD	Gemeente	claude
+STAD	Metropool	claude
+PER	Voorzetsel	claude
+PER	Elk	claude
+LANG	Groot	claude
+LANG	Uitgerekt	claude
+ELKE	Ieder	claude
+ELKE	Stuk voor stuk	claude
+KOM	Schaal	claude
+KOM	Nader	claude
+PAAR	Stel	claude
+PAAR	Enkele	claude
+KIJK	Zie	claude
+KIJK	Visie	claude
+FOTO	Kiekje	claude
+FOTO	Plaatje	claude
+GELD	Poen	claude
+GELD	Centen	claude
+LEUK	Aardig	claude
+LEUK	Grappig	claude
+VAAK	Dikwijls	claude
+VAAK	Veelal	claude
+TEN	Voorzetsel	claude
+TEN	Formeel vz	claude
+MOOI	Fraai	claude
+MOOI	Knap	claude
+WEEK	7 dagen	claude
+WEEK	Zacht	claude
+DOOD	Levenloos	claude
+DOOD	Sterfte	claude
+KON	Vermocht	claude
+KON	Was in staat	claude
+ROND	Bolvormig	claude
+ROND	Omheen	claude
+JOUW	Bezittelijk vnw	claude
+JOUW	Van jou	claude
+TER	Voorzetsel	claude
+TER	Formeel vz	claude
+ETEN	Nuttigen	claude
+ETEN	Voedsel	claude
+OUDE	Antieke	claude
+OUDE	Bejaarde	claude
+MEN	Onbep. vnw	claude
+MEN	Iedereen	claude
+NOU	Welnu	claude
+NOU	Enfin	claude
+HOOP	Wens	claude
+HOOP	Stapel	claude
+OPEN	Ontsloten	claude
+OPEN	Vrij	claude
+AUTO	Wagen	claude
+AUTO	Voertuig	claude
+DEN	Naaldboom	claude
+DEN	Conifeer	claude
+FILM	Rolprent	claude
+FILM	Laagje	claude
+NIKS	Nul	claude
+NIKS	Niets	claude
+ZOEK	Kwijt	claude
+ZOEK	Verdwenen	claude
+HEN	Persoonlijk vnw	claude
+HEN	Kip	claude
+ZEG	Verklaar	claude
+ZEG	Hoor eens	claude
+VIER	Telwoord	claude
+VIER	Feest	claude
+PAS	Nog maar net	claude
+PAS	Bewijs	claude
+OOIT	Weleens	claude
+OOIT	Eens	claude
+VAST	Stevig	claude
+VAST	Zeker	claude
+ZEER	Erg	claude
+ZEER	Pijn	claude
+ZUID	Onder	claude
+ZUID	Beneden	claude
+VRIJ	Los	claude
+VRIJ	Tamelijk	claude
+BEST	Puik	claude
+BEST	Prima	claude
+IDEE	Inval	claude
+IDEE	Gedachte	claude
+DER	Lidwoord	claude
+DER	Genitief	claude
+KANS	Optie	claude
+KANS	Toeval	claude
+HAND	Poot	claude
+HAND	Uiterste deel	claude
+ZOON	Telg	claude
+ZOON	Mannelijk kind	claude
+KIND	Spruit	claude
+KIND	Telg	claude
+ZORG	Hulp	claude
+ZORG	Onrust	claude
+BOEK	Werk	claude
+BOEK	Lectuur	claude
+HOOR	Verneem	claude
+HOOR	Echt waar	claude
+TEAM	Ploeg	claude
+TEAM	Groep	claude
+BLIJ	Vrolijk	claude
+BLIJ	Verheugd	claude
+OUD	Antiek	claude
+OUD	Bejaard	claude
+VOL	Gevuld	claude
+VOL	Overladen	claude
+DRUK	Bezig	claude
+DRUK	Pressie	claude
+MEI	5e maand	claude
+MEI	Vóór juni	claude
+TOP	Piek	claude
+TOP	Geweldig	claude
+HULP	Bijstand	claude
+HULP	Steun	claude
+KRIJG	Ontvang	claude
+KRIJG	Verwerf	claude
+VELE	Talrijke	claude
+VELE	Diverse	claude
+ZET	Stap	claude
+ZET	Plaatst	claude
+PRIJS	Tarief	claude
+PRIJS	Beloning	claude
+ORDE	Regelmaat	claude
+ORDE	Structuur	claude
+KANT	Zijde	claude
+KANT	Vitrage	claude
+ZAAK	Kwestie	claude
+ZAAK	Firma	claude
+TV	Televisie (afk.)	claude
+TV	Beeldbuis	claude
+ELK	Ieder	claude
+ELK	Apart	claude
+EURO	Munt	claude
+EURO	Valuta	claude
+JULI	7e maand	claude
+JULI	Hooimaand	claude
+OGEN	Kijkers	claude
+OGEN	Lijken	claude
+STUK	Fragment	claude
+STUK	Kapot	claude
+ZES	Telwoord	claude
+ZES	Cijfer 6	claude
+JUNI	6e maand	claude
+JUNI	Voor juli	claude
+PLEK	Locatie	claude
+PLEK	Stee	claude
+ROL	Functie	claude
+ROL	Broodje	claude
+VORM	Gedaante	claude
+VORM	Gestalte	claude
+LID	Genoot	claude
+LID	Gewricht	claude
+ZAT	Dronken	claude
+ZAT	Verbleef	claude
+HART	Kloppend orgaan	claude
+HART	Centrum	claude
+HEEN	Weg	claude
+HEEN	Vooruit	claude
+TIEN	Telwoord	claude
+TIEN	Cijfer 10	claude
+REST	Overschot	claude
+REST	Residu	claude
+OH	Ach	claude
+OH	Aha	claude
+GOD	Heer	claude
+GOD	Schepper	claude
+JAN	Voornaam	claude
+JAN	Gewone man	claude
+BANG	Angstig	claude
+BANG	Bevreesd	claude
+PLAN	Voornemen	claude
+PLAN	Opzet	claude
+ZIN	Bewering	claude
+ZIN	Trek	claude
+HTTP	Protocol (afk.)	claude
+HTTP	Webadres begin	claude
+MENS	Persoon	claude
+MENS	Individu	claude
+KORT	Beknopt	claude
+KORT	Bondig	claude
+VER	Afgelegen	claude
+VER	Op afstand	claude
+WET	Regel	claude
+WET	Statuut	claude
+EIND	Slot	claude
+EIND	Afloop	claude
+HARD	Stevig	claude
+HARD	Luid	claude
+SITE	Webpagina	claude
+SITE	Webstek	claude
+STAP	Schrede	claude
+STAP	Pas	claude
+BED	Ledikant	claude
+BED	Rustbank	claude
