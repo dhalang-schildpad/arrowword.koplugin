@@ -57,7 +57,7 @@ class Woord:
 class Woordenboek:
     """Woordenlijst met een index per (lengte, positie, letter)."""
 
-    def __init__(self, max_rang=None, max_len=12, data_dir=None):
+    def __init__(self, max_rang=None, max_len=12, data_dir=None, alleen_hand=False):
         data_dir = data_dir or DATA_DIR
         # frequentierang en Wiktionary-omschrijving per woord
         lijst = {r["woord"]: r for r in lees_woordenlijst(os.path.join(data_dir, "woorden.tsv"))}
@@ -82,7 +82,7 @@ class Woordenboek:
             if oms:
                 self.woorden.append(Woord(tekst, tuple(split_letters(tekst)), rang, oms, hand=True))
         for tekst, r in lijst.items():
-            if tekst in hand or (max_rang and r["rang"] > max_rang):
+            if alleen_hand or tekst in hand or (max_rang and r["rang"] > max_rang):
                 continue
             if not wrap_omschrijving(r["omschrijving"]):
                 continue
@@ -576,7 +576,9 @@ def genereer(sterren=4, seed=1, w=None, h=None, tijd=30.0, iteraties=3000, wb=No
     conf = STERREN[sterren]
     w = w or conf["w"]
     h = h or conf["h"]
-    wb = wb or Woordenboek(conf["max_rang"], conf["max_len"], data_dir)
+    # t/m 4 sterren alleen woorden met handgeschreven omschrijving (de
+    # Wiktionary-omschrijvingen zijn te vaak onbruikbaar); 5 sterren mag alles
+    wb = wb or Woordenboek(conf["max_rang"], conf["max_len"], data_dir, alleen_hand=sterren <= 4)
     rng = random.Random(seed)
     t0 = time.time()
     gen = Generator(wb, w, h, conf["max_len"], rng, conf["dichtheid"], gewichten)
@@ -600,7 +602,7 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     conf = STERREN[args.sterren]
-    wb = Woordenboek(conf["max_rang"], conf["max_len"])
+    wb = Woordenboek(conf["max_rang"], conf["max_len"], alleen_hand=args.sterren <= 4)
     os.makedirs(args.uit, exist_ok=True)
     for k in range(args.aantal):
         seed = args.seed + k
