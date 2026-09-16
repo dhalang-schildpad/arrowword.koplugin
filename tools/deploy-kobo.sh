@@ -24,5 +24,9 @@ if [[ -d "$HIER/puzzles/generated" ]]; then
     cp "$HIER"/puzzles/generated/*.json "$KOREADER/zweedsepuzzels/" 2>/dev/null || true
 fi
 
+# macOS zet ._-bestanden (resource forks) op FAT-schijven; opruimen
+if command -v dot_clean >/dev/null; then
+    dot_clean -m "$KOREADER/plugins/zweedsepuzzel.koplugin" "$KOREADER/zweedsepuzzels"
+fi
 sync
 echo "Klaar. Werp de Kobo veilig uit en herstart KOReader."

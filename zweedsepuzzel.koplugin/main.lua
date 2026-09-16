@@ -92,7 +92,7 @@ function ZweedsePuzzel:listPuzzles()
     for _, dir in ipairs(self:puzzleDirs()) do
         if lfs.attributes(dir, "mode") == "directory" then
             for entry in lfs.dir(dir) do
-                if entry:match("%.json$") then
+                if entry:match("%.json$") and not entry:match("^%._") then
                     local path = dir .. "/" .. entry
                     local puzzle = self:loadPuzzle(path)
                     if puzzle then
