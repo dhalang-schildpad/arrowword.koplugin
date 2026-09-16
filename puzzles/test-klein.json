@@ -1,0 +1,22 @@
+{
+  "versie": 1,
+  "titel": "Test klein",
+  "sterren": 1,
+  "w": 6,
+  "h": 5,
+  "cellen": [
+    [ {"t":"X"}, {"t":"O","oms":[{"txt":"Venster","dir":"D"}]}, {"t":"X"}, {"t":"O","oms":[{"txt":"Boom","dir":"D"}]}, {"t":"X"}, {"t":"O","oms":[{"txt":"Kropgewas","dir":"D"}]} ],
+    [ {"t":"O","oms":[{"txt":"Al","dir":"R"}]}, {"t":"L","s":"R"}, {"t":"L","s":"E"}, {"t":"L","s":"E"}, {"t":"L","s":"D"}, {"t":"L","s":"S"} ],
+    [ {"t":"X"}, {"t":"L","s":"A"}, {"t":"X"}, {"t":"L","s":"L","n":2}, {"t":"X"}, {"t":"L","s":"L"} ],
+    [ {"t":"O","oms":[{"txt":"Lokspijs","dir":"R"}]}, {"t":"L","s":"A"}, {"t":"L","s":"A","n":1}, {"t":"L","s":"S","n":3}, {"t":"X"}, {"t":"L","s":"A"} ],
+    [ {"t":"X"}, {"t":"L","s":"M"}, {"t":"X"}, {"t":"X"}, {"t":"X"}, {"t":"X"} ]
+  ],
+  "woorden": [
+    {"id":1, "antwoord":"REEDS", "oms":"Al", "dir":"R", "van":[0,1], "start":[1,1]},
+    {"id":2, "antwoord":"RAAM", "oms":"Venster", "dir":"D", "van":[1,0], "start":[1,1]},
+    {"id":3, "antwoord":"ELS", "oms":"Boom", "dir":"D", "van":[3,0], "start":[3,1]},
+    {"id":4, "antwoord":"SLA", "oms":"Kropgewas", "dir":"D", "van":[5,0], "start":[5,1]},
+    {"id":5, "antwoord":"AAS", "oms":"Lokspijs", "dir":"R", "van":[0,3], "start":[1,3]}
+  ],
+  "oplossing": {"woord":"ALS", "cellen":[[2,3],[3,2],[3,3]]}
+}
