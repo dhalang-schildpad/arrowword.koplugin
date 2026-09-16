@@ -11,6 +11,7 @@ import sys
 DIRS = {"R": (1, 0), "D": (0, 1), "RD": (1, 0), "DR": (0, 1)}
 STEP = {"R": (1, 0), "D": (0, 1), "RD": (0, 1), "DR": (1, 0)}
 MAX_REGELS, MAX_TEKENS = 2, 9
+MAX_LOS_WOORD = 11  # een los woord mag langer zijn; de plugin verkleint dan het lettertype
 
 
 def split_letters(antwoord):
@@ -89,7 +90,7 @@ def valideer(pad):
 
         # kwaliteit
         regels = wd["oms"].split("\n")
-        if len(regels) > MAX_REGELS or any(len(r) > MAX_TEKENS for r in regels):
+        if len(regels) > MAX_REGELS or any(len(r) > (MAX_TEKENS if " " in r else MAX_LOS_WOORD) for r in regels):
             waarsch.append(f"{naam}: omschrijving '{wd['oms']}' past mogelijk niet in een cel")
         stam = wd["antwoord"].lower()[:4]
         if len(stam) >= 4 and stam in wd["oms"].lower():

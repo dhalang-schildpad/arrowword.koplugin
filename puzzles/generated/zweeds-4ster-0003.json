@@ -6,9 +6,9 @@
   "h": 14,
   "cellen": [
     [{"t":"O","oms":[{"txt":"Cadeautje","dir":"R"},{"txt":"Ooft","dir":"D"}]},{"t":"L","s":"P"},{"t":"L","s":"A"},{"t":"L","s":"K"},{"t":"L","s":"J"},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Plus","dir":"D"}]},{"t":"X"},{"t":"O","oms":[{"txt":"Beeldnorm","dir":"D"}]},{"t":"X"},{"t":"O","oms":[{"txt":"Vóór juni","dir":"D"}]},{"t":"X"},{"t":"O","oms":[{"txt":"Muurholte","dir":"D"}]}],
-    [{"t":"L","s":"F","n":5},{"t":"X"},{"t":"X"},{"t":"O","oms":[{"txt":"Opoe","dir":"D"}]},{"t":"X"},{"t":"O","oms":[{"txt":"Vogel uit\nAustralie","dir":"R"},{"txt":"Plechtige\nbelofte","dir":"D"}]},{"t":"L","s":"E"},{"t":"L","s":"M"},{"t":"L","s":"U"},{"t":"O","oms":[{"txt":"Bezittel-\nijk vnw","dir":"R"}]},{"t":"L","s":"M"},{"t":"L","s":"IJ"},{"t":"L","s":"N"}],
+    [{"t":"L","s":"F","n":5},{"t":"X"},{"t":"X"},{"t":"O","oms":[{"txt":"Opoe","dir":"D"}]},{"t":"X"},{"t":"O","oms":[{"txt":"Vogel uit\nAustralie","dir":"R"},{"txt":"Plechtige\nbelofte","dir":"D"}]},{"t":"L","s":"E"},{"t":"L","s":"M"},{"t":"L","s":"U"},{"t":"O","oms":[{"txt":"Bezittelijk\nvnw","dir":"R"}]},{"t":"L","s":"M"},{"t":"L","s":"IJ"},{"t":"L","s":"N"}],
     [{"t":"L","s":"R"},{"t":"O","oms":[{"txt":"Paffen","dir":"R"}]},{"t":"L","s":"R"},{"t":"L","s":"O"},{"t":"L","s":"K"},{"t":"L","s":"E"},{"t":"L","s":"N"},{"t":"O","oms":[{"txt":"Brits\nbier","dir":"D"}]},{"t":"L","s":"H"},{"t":"O","oms":[{"txt":"Onderwijs\n(afk.)","dir":"D"}]},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Roem","dir":"D"}]},{"t":"L","s":"I"}],
-    [{"t":"L","s":"U"},{"t":"X"},{"t":"O","oms":[{"txt":"Bevond\nzich","dir":"D"}]},{"t":"L","s":"M"},{"t":"O","oms":[{"txt":"Religieu-\nze","dir":"D"}]},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Raad","dir":"R"}]},{"t":"L","s":"A"},{"t":"L","s":"D"},{"t":"L","s":"V"},{"t":"L","s":"I"},{"t":"L","s":"E"},{"t":"L","s":"S"}],
+    [{"t":"L","s":"U"},{"t":"X"},{"t":"O","oms":[{"txt":"Bevond\nzich","dir":"D"}]},{"t":"L","s":"M"},{"t":"O","oms":[{"txt":"Religieuze","dir":"D"}]},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Raad","dir":"R"}]},{"t":"L","s":"A"},{"t":"L","s":"D"},{"t":"L","s":"V"},{"t":"L","s":"I"},{"t":"L","s":"E"},{"t":"L","s":"S"}],
     [{"t":"L","s":"I"},{"t":"O","oms":[{"txt":"Staat","dir":"R"}]},{"t":"L","s":"L"},{"t":"L","s":"A"},{"t":"L","s":"N"},{"t":"L","s":"D"},{"t":"O","oms":[{"txt":"Reizen","dir":"D"}]},{"t":"L","s":"L"},{"t":"O","oms":[{"txt":"Nationaal\nlied","dir":"D"}]},{"t":"L","s":"W"},{"t":"O","oms":[{"txt":"Happening","dir":"D"}]},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Verduren","dir":"D"}]}],
     [{"t":"L","s":"T"},{"t":"O","oms":[{"txt":"Voegwoord","dir":"D"}]},{"t":"L","s":"A"},{"t":"O","oms":[{"txt":"Hoesje","dir":"D"}]},{"t":"L","s":"O"},{"t":"O","oms":[{"txt":"Gehouden","dir":"R"}]},{"t":"L","s":"G"},{"t":"L","s":"E"},{"t":"L","s":"V"},{"t":"L","s":"O"},{"t":"L","s":"E"},{"t":"L","s":"R","n":3},{"t":"L","s":"D"}],
     [{"t":"O","oms":[{"txt":"Kalender","dir":"R"}]},{"t":"L","s":"A"},{"t":"L","s":"G"},{"t":"L","s":"E"},{"t":"L","s":"N"},{"t":"L","s":"D"},{"t":"L","s":"A"},{"t":"X"},{"t":"L","s":"O"},{"t":"X"},{"t":"L","s":"V"},{"t":"X"},{"t":"L","s":"O"}],
@@ -18,7 +18,7 @@
     [{"t":"L","s":"O"},{"t":"X"},{"t":"L","s":"C"},{"t":"O","oms":[{"txt":"Vlot","dir":"R"}]},{"t":"L","s":"R"},{"t":"L","s":"A","n":4},{"t":"L","s":"P"},{"t":"O","oms":[{"txt":"Onderwijs\n(afk.)","dir":"R"}]},{"t":"L","s":"L"},{"t":"L","s":"O"},{"t":"L","s":"M"},{"t":"X"},{"t":"L","s":"T"}],
     [{"t":"L","s":"T"},{"t":"O","oms":[{"txt":"Papegaai","dir":"R"}]},{"t":"L","s":"A"},{"t":"L","s":"R"},{"t":"L","s":"A"},{"t":"O","oms":[{"txt":"Au","dir":"R"}]},{"t":"L","s":"O"},{"t":"L","s":"E"},{"t":"L","s":"I"},{"t":"O","oms":[{"txt":"Tijdperk","dir":"R"}]},{"t":"L","s":"E"},{"t":"L","s":"R"},{"t":"L","s":"A"}],
     [{"t":"L","s":"I"},{"t":"X"},{"t":"L","s":"S"},{"t":"O","oms":[{"txt":"Horizon","dir":"R"}]},{"t":"L","s":"K"},{"t":"L","s":"I"},{"t":"L","s":"M"},{"t":"O","oms":[{"txt":"Lidwoord","dir":"R"}]},{"t":"L","s":"E"},{"t":"L","s":"E"},{"t":"L","s":"N"},{"t":"X"},{"t":"L","s":"A"}],
-    [{"t":"O","oms":[{"txt":"Drankje","dir":"R"}]},{"t":"L","s":"T","n":2},{"t":"L","s":"H"},{"t":"L","s":"E"},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Spoor","dir":"R"}]},{"t":"L","s":"P"},{"t":"L","s":"A"},{"t":"L","s":"D"},{"t":"O","oms":[{"txt":"Voorzets-\nel","dir":"R"}]},{"t":"L","s":"T"},{"t":"L","s":"E"},{"t":"L","s":"N"}]
+    [{"t":"O","oms":[{"txt":"Drankje","dir":"R"}]},{"t":"L","s":"T","n":2},{"t":"L","s":"H"},{"t":"L","s":"E"},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Spoor","dir":"R"}]},{"t":"L","s":"P"},{"t":"L","s":"A"},{"t":"L","s":"D"},{"t":"O","oms":[{"txt":"Voorzetsel","dir":"R"}]},{"t":"L","s":"T"},{"t":"L","s":"E"},{"t":"L","s":"N"}]
   ],
   "woorden": [
     {"id":1,"antwoord":"PAKJE","oms":"Cadeautje","dir":"R","van":[0,0],"start":[1,0]},
@@ -30,13 +30,13 @@
     {"id":7,"antwoord":"OMA","oms":"Opoe","dir":"D","van":[3,1],"start":[3,2]},
     {"id":8,"antwoord":"EMU","oms":"Vogel uit\nAustralie","dir":"R","van":[5,1],"start":[6,1]},
     {"id":9,"antwoord":"EED","oms":"Plechtige\nbelofte","dir":"D","van":[5,1],"start":[5,2]},
-    {"id":10,"antwoord":"MIJN","oms":"Bezittel-\nijk vnw","dir":"R","van":[9,1],"start":[10,1]},
+    {"id":10,"antwoord":"MIJN","oms":"Bezittelijk\nvnw","dir":"R","van":[9,1],"start":[10,1]},
     {"id":11,"antwoord":"ROKEN","oms":"Paffen","dir":"R","van":[1,2],"start":[2,2]},
     {"id":12,"antwoord":"ALE","oms":"Brits\nbier","dir":"D","van":[7,2],"start":[7,3]},
     {"id":13,"antwoord":"VWO","oms":"Onderwijs\n(afk.)","dir":"D","van":[9,2],"start":[9,3]},
     {"id":14,"antwoord":"EER","oms":"Roem","dir":"D","van":[11,2],"start":[11,3]},
     {"id":15,"antwoord":"LAG","oms":"Bevond\nzich","dir":"D","van":[2,3],"start":[2,4]},
-    {"id":16,"antwoord":"NON","oms":"Religieu-\nze","dir":"D","van":[4,3],"start":[4,4]},
+    {"id":16,"antwoord":"NON","oms":"Religieuze","dir":"D","van":[4,3],"start":[4,4]},
     {"id":17,"antwoord":"ADVIES","oms":"Raad","dir":"R","van":[6,3],"start":[7,3]},
     {"id":18,"antwoord":"LAND","oms":"Staat","dir":"R","van":[1,4],"start":[2,4]},
     {"id":19,"antwoord":"GAAN","oms":"Reizen","dir":"D","van":[6,4],"start":[6,5]},
@@ -67,7 +67,7 @@
     {"id":44,"antwoord":"EEN","oms":"Lidwoord","dir":"R","van":[7,12],"start":[8,12]},
     {"id":45,"antwoord":"THEE","oms":"Drankje","dir":"R","van":[0,13],"start":[1,13]},
     {"id":46,"antwoord":"PAD","oms":"Spoor","dir":"R","van":[5,13],"start":[6,13]},
-    {"id":47,"antwoord":"TEN","oms":"Voorzets-\nel","dir":"R","van":[9,13],"start":[10,13]}
+    {"id":47,"antwoord":"TEN","oms":"Voorzetsel","dir":"R","van":[9,13],"start":[10,13]}
   ],
   "oplossing": {"woord": "STRAF", "cellen": [[12, 9], [1, 13], [11, 5], [5, 10], [0, 1]]}
 }

@@ -6,7 +6,7 @@
   "h": 12,
   "cellen": [
     [{"t":"O","oms":[{"txt":"Billen","dir":"R"},{"txt":"Defect","dir":"D"}]},{"t":"L","s":"K","n":1},{"t":"L","s":"O"},{"t":"L","s":"N"},{"t":"L","s":"T"},{"t":"O","oms":[{"txt":"Omlaag","dir":"D"}]},{"t":"X"},{"t":"O","oms":[{"txt":"Kolossaal","dir":"D"}]},{"t":"X"},{"t":"X"},{"t":"O","oms":[{"txt":"Diersoort","dir":"D"}]}],
-    [{"t":"L","s":"K"},{"t":"X"},{"t":"X"},{"t":"O","oms":[{"txt":"Vrouwenn-\naam","dir":"D"}]},{"t":"O","oms":[{"txt":"Getal","dir":"R"}]},{"t":"L","s":"N"},{"t":"L","s":"U"},{"t":"L","s":"M"},{"t":"L","s":"M"},{"t":"L","s":"E"},{"t":"L","s":"R"}],
+    [{"t":"L","s":"K"},{"t":"X"},{"t":"X"},{"t":"O","oms":[{"txt":"Vrouwennaam","dir":"D"}]},{"t":"O","oms":[{"txt":"Getal","dir":"R"}]},{"t":"L","s":"N"},{"t":"L","s":"U"},{"t":"L","s":"M"},{"t":"L","s":"M"},{"t":"L","s":"E"},{"t":"L","s":"R"}],
     [{"t":"L","s":"A","n":3},{"t":"O","oms":[{"txt":"Diverse","dir":"R"}]},{"t":"L","s":"V"},{"t":"L","s":"E"},{"t":"L","s":"L"},{"t":"L","s":"E"},{"t":"X"},{"t":"L","s":"E"},{"t":"X"},{"t":"O","oms":[{"txt":"Weigering","dir":"D"}]},{"t":"L","s":"A"}],
     [{"t":"L","s":"P"},{"t":"X"},{"t":"O","oms":[{"txt":"Heuvelkam","dir":"D"}]},{"t":"L","s":"V"},{"t":"O","oms":[{"txt":"Ietwaar","dir":"R"},{"txt":"Opmaat","dir":"D"}]},{"t":"L","s":"E"},{"t":"L","s":"R"},{"t":"L","s":"G"},{"t":"L","s":"E"},{"t":"L","s":"N"},{"t":"L","s":"S","n":5}],
     [{"t":"L","s":"O"},{"t":"O","oms":[{"txt":"Bizar","dir":"R"}]},{"t":"L","s":"R"},{"t":"L","s":"A"},{"t":"L","s":"A"},{"t":"L","s":"R"},{"t":"O","oms":[{"txt":"Necropool","dir":"D"}]},{"t":"L","s":"A"},{"t":"O","oms":[{"txt":"Tot ziens","dir":"D"}]},{"t":"L","s":"E"},{"t":"O","oms":[{"txt":"Rukken","dir":"D"}]}],
@@ -24,7 +24,7 @@
     {"id":3,"antwoord":"NEER","oms":"Omlaag","dir":"D","van":[5,0],"start":[5,1]},
     {"id":4,"antwoord":"MEGA","oms":"Kolossaal","dir":"D","van":[7,0],"start":[7,1]},
     {"id":5,"antwoord":"RAS","oms":"Diersoort","dir":"D","van":[10,0],"start":[10,1]},
-    {"id":6,"antwoord":"EVA","oms":"Vrouwenn-\naam","dir":"D","van":[3,1],"start":[3,2]},
+    {"id":6,"antwoord":"EVA","oms":"Vrouwennaam","dir":"D","van":[3,1],"start":[3,2]},
     {"id":7,"antwoord":"NUMMER","oms":"Getal","dir":"R","van":[4,1],"start":[5,1]},
     {"id":8,"antwoord":"VELE","oms":"Diverse","dir":"R","van":[1,2],"start":[2,2]},
     {"id":9,"antwoord":"NEE","oms":"Weigering","dir":"D","van":[9,2],"start":[9,3]},

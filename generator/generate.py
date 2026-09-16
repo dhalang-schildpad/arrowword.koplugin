@@ -28,7 +28,7 @@ import time
 from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from woorden import DATA_DIR, MAX_REGELS, MAX_TEKENS, lees_vulwoorden, lees_woordenlijst, split_letters, wrap_omschrijving  # noqa: E402
+from woorden import DATA_DIR, MAX_LOS_WOORD, MAX_REGELS, MAX_TEKENS, lees_vulwoorden, lees_woordenlijst, split_letters, wrap_omschrijving  # noqa: E402
 
 # Moeilijkheidstabel uit PLAN.md §5. `dichtheid` is het streefpercentage lettercellen.
 # Roostermaten volgen de vorm van het werkvlak op een Kobo Forma (bijna

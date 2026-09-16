@@ -28,7 +28,8 @@ class TestGenerate(unittest.TestCase):
         self.assertEqual(len({wd["antwoord"] for wd in puzzel["woorden"]}), len(puzzel["woorden"]), "dubbele antwoorden")
         for wd in puzzel["woorden"]:
             for regel in wd["oms"].split("\n"):
-                self.assertLessEqual(len(regel), generate.MAX_TEKENS)
+                grens = generate.MAX_TEKENS if " " in regel else generate.MAX_LOS_WOORD
+                self.assertLessEqual(len(regel), grens)
             self.assertLessEqual(wd["oms"].count("\n"), generate.MAX_REGELS - 1)
         self.assertIn("oplossing", puzzel)
         self.assertTrue(4 <= len(generate.split_letters(puzzel["oplossing"]["woord"])) <= 8)
