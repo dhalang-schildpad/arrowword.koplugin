@@ -43,6 +43,12 @@ def cmd_batch(args):
     print(f"{pad}: {len(deel)} woorden (van {len(rows)} kandidaten van {args.min}-{args.max} letters)")
 
 
+def splits(regel):
+    """Splits een regel op tabs, of op '|' als er geen tabs in staan (chatuitvoer)."""
+    sep = "\t" if "\t" in regel else "|"
+    return [d.strip() for d in regel.split(sep)]
+
+
 def stam(woord):
     w = woord.lower()
     return w if len(w) < 4 else w[:4]
@@ -54,9 +60,9 @@ def controleer(pad, bekend):
     with open(pad, encoding="utf-8") as f:
         for nr, regel in enumerate(f, 1):
             regel = regel.rstrip("\n")
-            if not regel.strip() or regel.startswith("#") or regel.startswith("woord\t"):
+            if not regel.strip() or regel.startswith("#") or regel.startswith("woord\t") or regel.startswith("```"):
                 continue
-            delen = [d.strip() for d in regel.split("\t")]
+            delen = splits(regel)
             woord, omsen = delen[0].upper(), [d for d in delen[1:] if d]
             if woord not in bekend:
                 fouten.append(f"regel {nr}: {woord} staat niet in de woordenlijst")
@@ -111,9 +117,9 @@ def cmd_merge(args):
             with open(pad, encoding="utf-8") as g:
                 for regel in g:
                     regel = regel.rstrip("\n")
-                    if not regel.strip() or regel.startswith("#") or regel.startswith("woord\t"):
+                    if not regel.strip() or regel.startswith("#") or regel.startswith("woord\t") or regel.startswith("```"):
                         continue
-                    delen = [d.strip() for d in regel.split("\t")]
+                    delen = splits(regel)
                     for o in delen[1:]:
                         if o:
                             f.write(f"{delen[0].upper()}\t{o}\tclaude\n")
