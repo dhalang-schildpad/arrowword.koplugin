@@ -139,7 +139,7 @@ function GameView:init()
     -- knoppen in de titelbalk (van rechts naar links)
     self.buttons = {}
     local bx = W - m
-    for _, b in ipairs({ { id = "close", text = _("Sluiten") }, { id = "check", text = _("Controleer") }, { id = "hint", text = _("Hint") } }) do
+    for __, b in ipairs({ { id = "close", text = _("Sluiten") }, { id = "check", text = _("Controleer") }, { id = "hint", text = _("Hint") } }) do
         local bw = textWidth(self.ui_face, b.text) + Screen:scaleBySize(24)
         bx = bx - bw
         b.rect = Geom:new{ x = bx, y = Screen:scaleBySize(4), w = bw, h = self.title_h - Screen:scaleBySize(8) }
@@ -241,7 +241,7 @@ function GameView:paintTitle(bb)
     local fh, asc = self.title_face.ftsize:getHeightAndAscender()
     local ty = math.floor((self.title_h - fh) / 2 + asc)
     RenderText:renderUtf8Text(bb, self.margin, ty, self.title_face, titel, true, false, Blitbuffer.COLOR_BLACK, self.title_max_w)
-    for _, b in ipairs(self.buttons) do
+    for __, b in ipairs(self.buttons) do
         bb:paintBorder(b.rect.x, b.rect.y, b.rect.w, b.rect.h, Size.border.button, Blitbuffer.COLOR_BLACK, Size.radius.button)
         drawCentered(bb, b.rect.x, b.rect.y, b.rect.w, b.rect.h, self.ui_face, b.text)
     end
@@ -301,7 +301,7 @@ function GameView:paintClueCell(bb, r, c)
     local pad = math.max(2, math.floor(self.cell * 0.04))
     local arrow = math.max(4, math.floor(self.cell * 0.10))
     local heeft_d = false
-    for _, o in ipairs(c.oms) do
+    for __, o in ipairs(c.oms) do
         if o.dir ~= "R" then heeft_d = true end
     end
     for i, o in ipairs(c.oms) do
@@ -318,8 +318,8 @@ function GameView:paintClueCell(bb, r, c)
         -- eerst zonder afbreken (kleiner lettertype heeft de voorkeur boven een
         -- koppelteken), daarna met afbreken
         local lines, face, line_h
-        for _, hyphen in ipairs({ false, true }) do
-            for _, f in ipairs(self.clue_faces) do
+        for __, hyphen in ipairs({ false, true }) do
+            for __f, f in ipairs(self.clue_faces) do
                 local fh = f.ftsize:getHeightAndAscender()
                 local lh = math.ceil(fh * 0.88)
                 local fit_lines = math.min(max_lines, math.floor(avail_h / lh))
@@ -344,7 +344,7 @@ function GameView:paintClueCell(bb, r, c)
         local _, asc = face.ftsize:getHeightAndAscender()
         local total = line_h * #lines
         local ty = hy + pad + math.floor((avail_h - total) / 2)
-        for _, line in ipairs(lines) do
+        for __, line in ipairs(lines) do
             local tw = textWidth(face, line)
             RenderText:renderUtf8Text(bb, r.x + pad + math.floor((avail_w - tw) / 2), ty + math.floor(asc * 0.88), face, line, true, false, Blitbuffer.COLOR_BLACK, avail_w)
             ty = ty + line_h
@@ -389,7 +389,7 @@ end
 
 function GameView:refreshCells(cells)
     local r
-    for _, c in ipairs(cells) do
+    for __, c in ipairs(cells) do
         local cr = self:cellRect(c.x, c.y)
         if r then
             local x1, y1 = math.min(r.x, cr.x), math.min(r.y, cr.y)
@@ -416,7 +416,7 @@ end
 
 function GameView:onTap(_, ges)
     local px, py = ges.pos.x, ges.pos.y
-    for _, b in ipairs(self.buttons) do
+    for __, b in ipairs(self.buttons) do
         if b.rect:contains(Geom:new{ x = px, y = py, w = 1, h = 1 }) then
             self:onButton(b.id)
             return true

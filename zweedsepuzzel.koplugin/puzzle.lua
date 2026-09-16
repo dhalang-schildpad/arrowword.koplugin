@@ -41,7 +41,7 @@ function Puzzle.new(data)
     self.cells = data.cellen
     self.words = {}
     self.cell_words = {}
-    for _, wd in ipairs(data.woorden) do
+    for __, wd in ipairs(data.woorden) do
         local step = DIR_STEP[wd.dir] or DIR_STEP.R
         local letters = Puzzle.splitLetters(wd.antwoord)
         local cells = {}
@@ -56,7 +56,7 @@ function Puzzle.new(data)
             horizontal = step[1] == 1,
         }
         self.words[#self.words + 1] = word
-        for _, c in ipairs(cells) do
+        for __c, c in ipairs(cells) do
             local k = key(c.x, c.y)
             self.cell_words[k] = self.cell_words[k] or {}
             table.insert(self.cell_words[k], word)
@@ -140,7 +140,7 @@ function Puzzle:selectCell(x, y)
         target = self.current
     else
         target = words[1]
-        for _, w in ipairs(words) do
+        for __, w in ipairs(words) do
             if w.horizontal then target = w end
         end
     end
@@ -202,7 +202,7 @@ function Puzzle:check()
     local n_wrong, n_empty = 0, 0
     local gezien = {}
     self.wrong = {}
-    for _, w in ipairs(self.words) do
+    for __, w in ipairs(self.words) do
         for i, c in ipairs(w.cells) do
             local k = key(c.x, c.y)
             if not gezien[k] then
@@ -221,7 +221,7 @@ function Puzzle:check()
 end
 
 function Puzzle:isSolved()
-    for _, w in ipairs(self.words) do
+    for __, w in ipairs(self.words) do
         for i, c in ipairs(w.cells) do
             if self.entered[key(c.x, c.y)] ~= w.letters[i] then
                 return false

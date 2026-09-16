@@ -89,7 +89,7 @@ end
 function ZweedsePuzzel:listPuzzles()
     local items = {}
     local progress = self.settings:readSetting("voortgang") or {}
-    for _, dir in ipairs(self:puzzleDirs()) do
+    for __, dir in ipairs(self:puzzleDirs()) do
         if lfs.attributes(dir, "mode") == "directory" then
             for entry in lfs.dir(dir) do
                 if entry:match("%.json$") and not entry:match("^%._") then
