@@ -48,37 +48,45 @@ RICHTING = ("R", "D")
 
 
 class Woord:
-    __slots__ = ("tekst", "cellen", "rang", "oms")
+    __slots__ = ("tekst", "cellen", "rang", "oms", "hand")
 
-    def __init__(self, tekst, cellen, rang, oms):
-        self.tekst, self.cellen, self.rang, self.oms = tekst, cellen, rang, oms
+    def __init__(self, tekst, cellen, rang, oms, hand=False):
+        self.tekst, self.cellen, self.rang, self.oms, self.hand = tekst, cellen, rang, oms, hand
 
 
 class Woordenboek:
     """Woordenlijst met een index per (lengte, positie, letter)."""
 
     def __init__(self, max_rang=None, max_len=12, data_dir=None):
-        # handgeschreven omschrijvingen (vulwoorden.tsv) en de door Claude
-        # geschreven batches (omschrijvingen.tsv) gaan vóór Wiktionary
-        hand = defaultdict(list)
+        data_dir = data_dir or DATA_DIR
+        # frequentierang en Wiktionary-omschrijving per woord
+        lijst = {r["woord"]: r for r in lees_woordenlijst(os.path.join(data_dir, "woorden.tsv"))}
+        # handgeschreven omschrijvingen: vulwoorden.tsv (gecureerd, altijd toegestaan)
+        # en omschrijvingen.tsv (Claude-batches; onderhevig aan de frequentiegrens)
+        hand, gecureerd = defaultdict(list), set()
         for naam in ("vulwoorden.tsv", "omschrijvingen.tsv"):
-            pad = os.path.join(data_dir or DATA_DIR, naam)
+            pad = os.path.join(data_dir, naam)
             if os.path.exists(pad):
                 for r in lees_vulwoorden(pad):
                     if r["omschrijving"] not in hand[r["woord"]]:
                         hand[r["woord"]].append(r["omschrijving"])
+                    if naam == "vulwoorden.tsv":
+                        gecureerd.add(r["woord"])
         self.woorden = []
         # alleen omschrijvingen die in een cel passen; woorden zonder passende omschrijving vallen af
         for tekst, oms in hand.items():
             oms = [o for o in oms if wrap_omschrijving(o)]
+            rang = lijst[tekst]["rang"] if tekst in lijst else 0
+            if tekst not in gecureerd and max_rang and rang > max_rang:
+                continue
             if oms:
-                self.woorden.append(Woord(tekst, tuple(split_letters(tekst)), 0, oms))
-        for r in lees_woordenlijst(os.path.join(data_dir, "woorden.tsv") if data_dir else None):
-            if r["woord"] in hand or (max_rang and r["rang"] > max_rang):
+                self.woorden.append(Woord(tekst, tuple(split_letters(tekst)), rang, oms, hand=True))
+        for tekst, r in lijst.items():
+            if tekst in hand or (max_rang and r["rang"] > max_rang):
                 continue
             if not wrap_omschrijving(r["omschrijving"]):
                 continue
-            self.woorden.append(Woord(r["woord"], tuple(split_letters(r["woord"])), r["rang"], [r["omschrijving"]]))
+            self.woorden.append(Woord(tekst, tuple(split_letters(tekst)), r["rang"], [r["omschrijving"]]))
         self.per_lengte = defaultdict(list)
         self.index = defaultdict(lambda: defaultdict(set))
         for i, wd in enumerate(self.woorden):
@@ -319,7 +327,8 @@ class Generator:
     # -- woordkeuze -----------------------------------------------------------
     def kies_woord(self, ids):
         steekproef = ids if len(ids) <= 40 else self.rng.sample(ids, 40)
-        gewichten = [1.0 / math.sqrt(self.wb.woorden[i].rang + 50) for i in steekproef]
+        # woorden met een handgeschreven omschrijving krijgen sterke voorkeur
+        gewichten = [(4.0 if self.wb.woorden[i].hand else 1.0) / math.sqrt(self.wb.woorden[i].rang + 50) for i in steekproef]
         return self.wb.woorden[self.rng.choices(steekproef, gewichten)[0]]
 
     # -- groeien --------------------------------------------------------------

@@ -22,20 +22,52 @@ DATA = os.path.join(HIER, "data")
 BATCH_DIR = os.path.join(DATA, "omschrijvingen")
 
 
-def kandidaten(min_len, max_len):
+def kandidaten(min_len, max_len, volgorde="rang"):
     rows = [r for r in lees_woordenlijst(os.path.join(DATA, "woorden.tsv"))
             if min_len <= len(split_letters(r["woord"])) <= max_len]
-    rows.sort(key=lambda r: r["rang"])
+    if volgorde == "plaatsing":
+        # vaakst geplaatste woorden eerst (zie cmd_tel), daarna op frequentie
+        telling = {}
+        pad = os.path.join(DATA, "plaatsing.tsv")
+        if os.path.exists(pad):
+            with open(pad, encoding="utf-8") as f:
+                for regel in f:
+                    w, n = regel.rstrip("\n").split("\t")
+                    telling[w] = int(n)
+        rows.sort(key=lambda r: (-telling.get(r["woord"], 0), r["rang"]))
+    else:
+        rows.sort(key=lambda r: r["rang"])
     return rows
 
 
+def cmd_tel(args):
+    """Genereer puzzels en tel hoe vaak elk woord geplaatst wordt."""
+    import generate
+    from collections import Counter
+    telling = Counter()
+    n = 0
+    for sterren, aantal in ((4, args.aantal), (3, args.aantal // 2), (5, args.aantal // 2)):
+        wb = generate.Woordenboek(generate.STERREN[sterren]["max_rang"], generate.STERREN[sterren]["max_len"])
+        for seed in range(1, aantal + 1):
+            puzzel = generate.genereer(sterren, seed, wb=wb)[0]
+            telling.update(w["antwoord"] for w in puzzel["woorden"])
+            n += 1
+            print(f"\r{n} puzzels", end="", flush=True)
+    print()
+    pad = os.path.join(DATA, "plaatsing.tsv")
+    with open(pad, "w", encoding="utf-8") as f:
+        for w, c in telling.most_common():
+            f.write(f"{w}\t{c}\n")
+    print(f"{pad}: {len(telling)} verschillende woorden in {n} puzzels")
+
+
 def cmd_batch(args):
-    rows = kandidaten(args.min, args.max)
+    rows = kandidaten(args.min, args.max, args.volgorde)
     start = (args.nummer - 1) * args.grootte
     deel = rows[start:start + args.grootte]
     if not deel:
         sys.exit(f"geen woorden voor batch {args.nummer} ({len(rows)} kandidaten)")
-    pad = os.path.join(BATCH_DIR, f"batch-{args.nummer:03d}-in.tsv")
+    pad = os.path.join(BATCH_DIR, f"{args.prefix}-{args.nummer:03d}-in.tsv")
     with open(pad, "w", encoding="utf-8") as f:
         f.write("woord\thuidige_omschrijving\n")
         for r in deel:
@@ -107,7 +139,7 @@ def cmd_merge(args):
     n = 0
     with open(uit, "w", encoding="utf-8") as f:
         f.write("woord\tomschrijving\tbron\n")
-        for pad in sorted(glob.glob(os.path.join(BATCH_DIR, "batch-*.tsv"))):
+        for pad in sorted(glob.glob(os.path.join(BATCH_DIR, "batch-*.tsv")) + glob.glob(os.path.join(BATCH_DIR, "lang-*.tsv"))):
             if pad.endswith("-in.tsv"):
                 continue
             fouten, _, _ = controleer(pad, bekend)
@@ -131,7 +163,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("batch"); b.add_argument("nummer", type=int); b.add_argument("--grootte", type=int, default=200)
-    b.add_argument("--min", type=int, default=2); b.add_argument("--max", type=int, default=4); b.set_defaults(fn=cmd_batch)
+    b.add_argument("--min", type=int, default=2); b.add_argument("--max", type=int, default=4)
+    b.add_argument("--prefix", default="batch"); b.add_argument("--volgorde", choices=("rang", "plaatsing"), default="rang")
+    b.set_defaults(fn=cmd_batch)
+    t = sub.add_parser("tel"); t.add_argument("--aantal", type=int, default=40); t.set_defaults(fn=cmd_tel)
     c = sub.add_parser("check"); c.add_argument("bestanden", nargs="+"); c.set_defaults(fn=cmd_check)
     m = sub.add_parser("merge"); m.set_defaults(fn=cmd_merge)
     args = ap.parse_args()
