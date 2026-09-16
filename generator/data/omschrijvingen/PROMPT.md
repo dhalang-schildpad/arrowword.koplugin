@@ -33,4 +33,21 @@ Regels:
 - Nederlands-Nederlands; geen uitsluitend Vlaamse betekenis als enige omschrijving.
 - Hooguit 1 op de 20 woorden een woordspeling, dan met een "?" erachter.
 
+Voorbeelden van goede regels (dit is het gewenste niveau en formaat):
+
+FILM | Rolprent | Bioscoopwerk | Laagje
+BED | Ledikant | Slaapplaats | Tuinperk
+NET | Precies | Web | Visgerei
+MIJN | Bezittelijk vnw | Groeve | Kolengang
+DEN | Naaldboom | Conifeer | Kerstboom
+DUS | Derhalve | Bijgevolg | Daarom
+LIEP | Wandelde | Ging te voet | Stapte
+ENZ | Et cetera (afk.) | En zo voort (afk.) | Enzovoort (afk.)
+EEN | Onbepaald lidwoord | Telwoord | Cijfer 1
+ARA | Papegaai | Tropische vogel | Kleurrijke vogel
+IJS | Bevroren water | Koud lekkers | Schaatsbaan?
+BANK | Zitmeubel | Geldinstelling | Zandplaat
+
+Zo niet: "Een lidwoord" (lidwoord vooraan), "Filmpje" bij FILM (stam van het antwoord), "Iets wat je in de bioscoop ziet" (te lang), "Lopen" bij LIEP (verkeerde werkwoordsvorm).
+
 De lijst:
