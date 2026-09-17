@@ -23,6 +23,11 @@ cp "$HIER"/puzzles/*.json "$KOREADER/zweedsepuzzels/" 2>/dev/null || true
 if [[ -d "$HIER/puzzles/generated" ]]; then
     cp "$HIER"/puzzles/generated/*.json "$KOREADER/zweedsepuzzels/" 2>/dev/null || true
 fi
+for pack in "$HIER"/puzzles/pack-*/; do
+    [[ -d "$pack" ]] || continue
+    echo "Pack $(basename "$pack") -> $KOREADER/zweedsepuzzels/"
+    cp "$pack"*.json "$KOREADER/zweedsepuzzels/" 2>/dev/null || true
+done
 
 # macOS zet ._-bestanden (resource forks) op FAT-schijven; opruimen
 if command -v dot_clean >/dev/null; then
