@@ -61,10 +61,10 @@ Two consequences for the project:
 - **Packs should say which screens they suit.** Today a pack's grid size is
   tied to its difficulty. The roadmap has an item to separate the two, so a
   six-inch reader can get four-star vocabulary in a 10 x 11 grid.
-- **Generate your own size.** `generate.py` accepts `--width` and `--height`:
+- **Generate your own size.** The generator in [arrowword-puzzles](https://github.com/dhalang-schildpad/arrowword-puzzles) accepts `--width` and `--height`:
 
   ```bash
-  python3 generator/generate.py --lang nl --stars 4 --width 10 --height 11 --count 20 --seed 1 --out puzzles/packs/nl/4-star-compact
+  python3 generator/generate.py --lang nl --stars 4 --width 10 --height 11 --count 20 --seed 1 --out out/
   ```
 
 ## Notes for Kobo owners

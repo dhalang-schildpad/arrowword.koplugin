@@ -1,4 +1,4 @@
--- Tests for arrowword.koplugin/puzzle.lua without the KOReader UI.
+-- Tests for puzzle.lua without the KOReader UI.
 -- Run with tools/test.sh (uses luajit and json.lua from the emulator build).
 local json = require("json")
 local Puzzle = require("puzzle")
@@ -15,7 +15,7 @@ local function check(cond, msg)
     if cond then n_ok = n_ok + 1 else n_fail = n_fail + 1; print("FAIL: " .. msg) end
 end
 
-local path = arg[1] or "puzzles/samples/test-small.json"
+local path = arg[1] or "tools/fixtures/test-small.json"
 local p = Puzzle.new(json.decode(readFile(path)))
 
 check(#p.words == 5, "5 words")

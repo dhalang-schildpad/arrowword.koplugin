@@ -57,7 +57,9 @@ letter is a `C`, an `X` or the border.
 `solution.cells[i]` is the letter cell numbered `i+1`; together the letters
 spell `solution.word`. Optional.
 
-## Rules checked by `generator/validate.py`
+## Rules checked by the validator
+
+`generator/validate.py` in [arrowword-puzzles](https://github.com/dhalang-schildpad/arrowword-puzzles) checks the following.
 
 Errors:
 - dimensions match `cells`;

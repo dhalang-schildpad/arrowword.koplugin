@@ -1,5 +1,8 @@
 # Architecture
 
+The project is split over two repositories: this plugin, and [arrowword-puzzles](https://github.com/dhalang-schildpad/arrowword-puzzles) with the
+generator, the word and clue data, and the packs. The puzzle format is the contract between them.
+
 ## The main decision: generate on a computer, solve on the device
 
 Filling a dense arrowword grid is a search problem. On a laptop a 13 x 14 grid
@@ -12,7 +15,7 @@ So the device only renders and solves. Puzzles are plain JSON files copied
 over USB, and the plugin stays small.
 
 ```
-generator/ (Python)                      arrowword.koplugin/ (Lua, on the device)
+arrowword-puzzles (Python)               arrowword.koplugin (Lua, on the device)
   data/<lang>/words.tsv, fillers.tsv,      main.lua      library, progress
               clues.tsv                    puzzle.lua    model, no KOReader deps
   generate.py  -> puzzle JSON  ---USB--->  gameview.lua  painting and input

@@ -1,4 +1,4 @@
--- Derived from KOReader's own .luacheckrc, so that `luacheck arrowword.koplugin`
+-- Derived from KOReader's own .luacheckrc, so that `luacheck *.lua`
 -- also works outside a KOReader checkout.
 unused_args = false
 std = "luajit"
