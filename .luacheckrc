@@ -1,5 +1,5 @@
--- Afgeleid van KOReaders eigen .luacheckrc, zodat `luacheck zweedsepuzzel.koplugin`
--- ook los van de KOReader-checkout werkt.
+-- Derived from KOReader's own .luacheckrc, so that `luacheck arrowword.koplugin`
+-- also works outside a KOReader checkout.
 unused_args = false
 std = "luajit"
 self = false

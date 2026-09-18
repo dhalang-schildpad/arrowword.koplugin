@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-"""Generator voor Nederlandstalige Zweedse puzzels (alleen standaardbibliotheek).
+"""Generator for arrowword ("Zweedse puzzel") puzzles (standard library only).
 
-Gebruik:
-    python3 generator/generate.py --sterren 4 --aantal 3 --seed 1 --uit puzzles/generated/
+Usage:
+    python3 generator/generate.py --lang nl --stars 4 --count 3 --seed 1 --out puzzles/generated/
 
-Werkwijze (PLAN.md §5, hybride):
-1. Een ankerwoord wordt geplaatst; daarna groeit het rooster incrementeel met
-   woorden die bestaande letters kruisen. Elk woord krijgt de cel ervoor (links
-   bij R, erboven bij D) als omschrijvingscel; die cel mag twee omschrijvingen
-   dragen (één R, één D). Het rooster blijft na elke plaatsing een geldige
-   puzzel: elke letterreeks van >=2 cellen is precies één woord, elke letter
-   zit in een woord, woorden eindigen tegen een niet-lettercel of de rand.
-2. Kandidaatwoorden komen uit een index per (lengte, positie, letter).
-3. Bij vastlopen worden een paar woorden rond lege plekken verwijderd en wordt
-   opnieuw gegroeid ("ruin and recreate"); na te veel mislukkingen volgt een
-   herstart met een nieuwe seed. Het dichtste rooster binnen de tijd wint.
-4. Ongebruikte cellen worden {"t":"X"}; een oplossingswoord wordt gekozen uit
-   de letters in het rooster.
+Approach (docs/history/PLAN.nl.md §5, hybrid):
+1. An anchor word is placed; the grid then grows incrementally with words
+   that cross existing letters. Each word gets the cell before it (to the
+   left for R, above for D) as its clue cell; that cell may carry two clues
+   (one R, one D). The grid stays a valid puzzle after every placement: every
+   run of >=2 letter cells is exactly one word, every letter is in a word,
+   words end against a non-letter cell or the border.
+2. Candidate words come from an index per (length, position, letter).
+3. When stuck, a few words around empty spots are removed and the grid grows
+   again ("ruin and recreate"); after too many failures a restart follows
+   with a new seed. The densest grid within the time budget wins.
+4. Unused cells become {"t":"X"}; a solution word is picked from the letters
+   in the grid.
 """
 import argparse
 import json
@@ -28,87 +28,91 @@ import time
 from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from woorden import DATA_DIR, MAX_LOS_WOORD, MAX_REGELS, MAX_TEKENS, lees_vulwoorden, lees_woordenlijst, split_letters, wrap_omschrijving  # noqa: E402
+from words import (  # noqa: E402
+    DATA_DIR, LANGUAGES, MAX_CHARS, MAX_LINES, MAX_SINGLE_WORD,
+    fix_clue_capitalization, read_clue_file, read_words, require_word_list, split_letters, wrap_clue,
+)
 
-# Moeilijkheidstabel uit PLAN.md §5. `dichtheid` is het streefpercentage lettercellen.
-# Roostermaten volgen de vorm van het werkvlak op een Kobo Forma (bijna
-# vierkant: 1440 breed, ~1450 hoog na titelbalk, omschrijvingsbalk en
-# toetsenbord), zodat de cellen zo groot mogelijk worden.
-STERREN = {
-    1: dict(w=10, h=11, max_rang=5000, dichtheid=0.55, max_len=6),
-    2: dict(w=11, h=12, max_rang=5000, dichtheid=0.55, max_len=7),
-    3: dict(w=12, h=13, max_rang=15000, dichtheid=0.62, max_len=8),
-    4: dict(w=13, h=14, max_rang=30000, dichtheid=0.68, max_len=9),
-    5: dict(w=14, h=15, max_rang=None, dichtheid=0.72, max_len=10),
+# Difficulty table from docs/history/PLAN.nl.md §5. `density` is the target
+# percentage of letter cells. Grid sizes follow the shape of the work area on
+# a Kobo Forma (nearly square: 1440 wide, ~1450 high after the title bar,
+# clue bar and keyboard), so cells are as large as possible.
+STARS = {
+    1: dict(w=10, h=11, max_rank=5000, density=0.55, max_len=6),
+    2: dict(w=11, h=12, max_rank=5000, density=0.55, max_len=7),
+    3: dict(w=12, h=13, max_rank=15000, density=0.62, max_len=8),
+    4: dict(w=13, h=14, max_rank=30000, density=0.68, max_len=9),
+    5: dict(w=14, h=15, max_rank=None, density=0.72, max_len=10),
 }
 
-LEEG, LETTER, BLOK = 0, 1, 2
+EMPTY, LETTER, BLOCK = 0, 1, 2
 R, D = 0, 1
-RICHTING = ("R", "D")
+DIRS = ("R", "D")
 
 
-class Woord:
-    __slots__ = ("tekst", "cellen", "rang", "oms", "hand")
+class Word:
+    __slots__ = ("text", "cells", "rank", "clues", "hand")
 
-    def __init__(self, tekst, cellen, rang, oms, hand=False):
-        self.tekst, self.cellen, self.rang, self.oms, self.hand = tekst, cellen, rang, oms, hand
+    def __init__(self, text, cells, rank, clues, hand=False):
+        self.text, self.cells, self.rank, self.clues, self.hand = text, cells, rank, clues, hand
 
 
-class Woordenboek:
-    """Woordenlijst met een index per (lengte, positie, letter)."""
+class WordList:
+    """Word list with an index per (length, position, letter)."""
 
-    def __init__(self, max_rang=None, max_len=12, data_dir=None, alleen_hand=False):
-        data_dir = data_dir or DATA_DIR
-        # frequentierang en Wiktionary-omschrijving per woord
-        lijst = {r["woord"]: r for r in lees_woordenlijst(os.path.join(data_dir, "woorden.tsv"))}
-        # handgeschreven omschrijvingen: vulwoorden.tsv (gecureerd, altijd toegestaan)
-        # en omschrijvingen.tsv (Claude-batches; onderhevig aan de frequentiegrens)
-        hand, gecureerd = defaultdict(list), set()
-        for naam in ("vulwoorden.tsv", "omschrijvingen.tsv"):
-            pad = os.path.join(data_dir, naam)
-            if os.path.exists(pad):
-                for r in lees_vulwoorden(pad):
-                    if r["omschrijving"] not in hand[r["woord"]]:
-                        hand[r["woord"]].append(r["omschrijving"])
-                    if naam == "vulwoorden.tsv":
-                        gecureerd.add(r["woord"])
-        self.woorden = []
-        # alleen omschrijvingen die in een cel passen; woorden zonder passende omschrijving vallen af
-        for tekst, oms in hand.items():
-            oms = [o for o in oms if wrap_omschrijving(o)]
-            rang = lijst[tekst]["rang"] if tekst in lijst else 0
-            if tekst not in gecureerd and max_rang and rang > max_rang:
+    def __init__(self, max_rank=None, max_len=12, lang="nl", data_dir=None, hand_only=False):
+        self.lang = lang
+        data_dir = os.path.join(data_dir or DATA_DIR, lang)
+        # frequency rank and Wiktionary clue per word
+        by_text = {r["word"]: r for r in read_words(os.path.join(data_dir, "words.tsv"), lang=lang)}
+        # hand-written clues: fillers.tsv (curated, always allowed) and
+        # clues.tsv (Claude batches; subject to the frequency cutoff)
+        hand, curated = defaultdict(list), set()
+        for name in ("fillers.tsv", "clues.tsv"):
+            path = os.path.join(data_dir, name)
+            if os.path.exists(path):
+                for r in read_clue_file(path):
+                    if r["clue"] not in hand[r["word"]]:
+                        hand[r["word"]].append(r["clue"])
+                    if name == "fillers.tsv":
+                        curated.add(r["word"])
+        self.words = []
+        # only clues that fit in a cell; words without a fitting clue drop out
+        for text, clues in hand.items():
+            clues = [c for c in clues if wrap_clue(c)]
+            rank = by_text[text]["rank"] if text in by_text else 0
+            if text not in curated and max_rank and rank > max_rank:
                 continue
-            if oms:
-                self.woorden.append(Woord(tekst, tuple(split_letters(tekst)), rang, oms, hand=True))
-        for tekst, r in lijst.items():
-            if alleen_hand or tekst in hand or (max_rang and r["rang"] > max_rang):
+            if clues:
+                self.words.append(Word(text, tuple(split_letters(text, lang)), rank, clues, hand=True))
+        for text, r in by_text.items():
+            if hand_only or text in hand or (max_rank and r["rank"] > max_rank):
                 continue
-            if not wrap_omschrijving(r["omschrijving"]):
+            if not wrap_clue(r["clue"]):
                 continue
-            self.woorden.append(Woord(tekst, tuple(split_letters(tekst)), r["rang"], [r["omschrijving"]]))
-        self.per_lengte = defaultdict(list)
+            self.words.append(Word(text, tuple(split_letters(text, lang)), r["rank"], [r["clue"]]))
+        self.by_length = defaultdict(list)
         self.index = defaultdict(lambda: defaultdict(set))
-        for i, wd in enumerate(self.woorden):
-            n = len(wd.cellen)
+        for i, wd in enumerate(self.words):
+            n = len(wd.cells)
             if 2 <= n <= max_len:
-                self.per_lengte[n].append(i)
-                for pos, letter in enumerate(wd.cellen):
+                self.by_length[n].append(i)
+                for pos, letter in enumerate(wd.cells):
                     self.index[n][(pos, letter)].add(i)
-        self.alles = {n: set(ids) for n, ids in self.per_lengte.items()}
+        self.all_by_length = {n: set(ids) for n, ids in self.by_length.items()}
 
-    def kandidaten(self, patroon, gebruikt):
-        """Ids van woorden die passen op patroon (lijst van letters of None)."""
-        n = len(patroon)
+    def candidates(self, pattern, used):
+        """Ids of words that fit `pattern` (list of letters or None)."""
+        n = len(pattern)
         sets = []
-        for pos, letter in enumerate(patroon):
+        for pos, letter in enumerate(pattern):
             if letter is not None:
                 s = self.index[n].get((pos, letter))
                 if not s:
                     return []
                 sets.append(s)
         if not sets:
-            result = self.alles.get(n, set())
+            result = self.all_by_length.get(n, set())
         else:
             sets.sort(key=len)
             result = sets[0]
@@ -116,504 +120,507 @@ class Woordenboek:
                 result = result & s
                 if not result:
                     return []
-        return [i for i in result if self.woorden[i].tekst not in gebruikt]
+        return [i for i in result if self.words[i].text not in used]
 
 
-class Rooster:
-    """Roostertoestand. Cellen zijn LEEG, LETTER of BLOK (omschrijving of X)."""
+class Grid:
+    """Grid state. Cells are EMPTY, LETTER or BLOCK (clue or X)."""
 
     def __init__(self, w, h, max_len):
         self.w, self.h, self.max_len = w, h, max_len
         n = w * h
-        self.type = [LEEG] * n
+        self.type = [EMPTY] * n
         self.letter = [None] * n
-        self.in_woord = ([None] * n, [None] * n)   # per richting: woord-id
-        self.oms = ([None] * n, [None] * n)        # per richting: woord-id van de omschrijving
-        self.blok_refs = [0] * n
-        self.woorden = {}                           # id -> (sx, sy, d, Woord)
-        self.gebruikt = set()
-        self.volgende_id = 1
+        self.in_word = ([None] * n, [None] * n)   # per direction: word id
+        self.clue_id = ([None] * n, [None] * n)   # per direction: word id whose clue lives here
+        self.block_refs = [0] * n
+        self.words = {}                             # id -> (sx, sy, d, Word)
+        self.used = set()
+        self.next_id = 1
         self.n_letters = 0
-        self.n_dubbel = 0                           # letters die in twee woorden zitten
+        self.n_double = 0                            # letters that belong to two words
 
     def copy(self):
-        k = Rooster.__new__(Rooster)
+        k = Grid.__new__(Grid)
         k.w, k.h, k.max_len = self.w, self.h, self.max_len
         k.type = self.type[:]
         k.letter = self.letter[:]
-        k.in_woord = (self.in_woord[0][:], self.in_woord[1][:])
-        k.oms = (self.oms[0][:], self.oms[1][:])
-        k.blok_refs = self.blok_refs[:]
-        k.woorden = dict(self.woorden)
-        k.gebruikt = set(self.gebruikt)
-        k.volgende_id = self.volgende_id
+        k.in_word = (self.in_word[0][:], self.in_word[1][:])
+        k.clue_id = (self.clue_id[0][:], self.clue_id[1][:])
+        k.block_refs = self.block_refs[:]
+        k.words = dict(self.words)
+        k.used = set(self.used)
+        k.next_id = self.next_id
         k.n_letters = self.n_letters
-        k.n_dubbel = self.n_dubbel
+        k.n_double = self.n_double
         return k
 
-    def dichtheid(self):
+    def density(self):
         return self.n_letters / (self.w * self.h)
 
-    def waarde(self):
-        """Doelfunctie voor het verbeteren: veel letters, liefst dubbel gekruist."""
-        return self.n_letters + self.n_dubbel
+    def value(self):
+        """Objective function for improving: many letters, ideally double-crossed."""
+        return self.n_letters + self.n_double
 
-    def loop(self, sx, sy, d):
-        """Loop vanaf (sx,sy) in richting d en geef elk geldig slot.
+    def walk(self, sx, sy, d):
+        """Walk from (sx,sy) in direction d and yield every valid slot.
 
-        Yields (L, patroon, nieuw, voor, na, vast_enkel) per geldige lengte L:
-        patroon is een lijst letters/None, nieuw het aantal lege cellen, voor de
-        index van de omschrijvingscel, na de cel na het woord (-1 aan de rand) en
-        vast_enkel het aantal nieuwe letters dat nooit meer gekruist kan worden.
+        Yields (L, pattern, new, before, after, fixed_single) per valid length L:
+        pattern is a list of letters/None, new the number of empty cells, before
+        the index of the clue cell, after the cell after the word (-1 at the
+        border) and fixed_single the number of new letters that could never be
+        crossed again.
         """
         w, h = self.w, self.h
         typ = self.type
         if d == R:
             if sx < 1:
                 return
-            voor, stap, max_l = sy * w + sx - 1, 1, min(self.max_len, w - sx)
+            before, step, max_l = sy * w + sx - 1, 1, min(self.max_len, w - sx)
         else:
             if sy < 1:
                 return
-            voor, stap, max_l = (sy - 1) * w + sx, w, min(self.max_len, h - sy)
-        if typ[voor] == LETTER or self.oms[d][voor] is not None:
+            before, step, max_l = (sy - 1) * w + sx, w, min(self.max_len, h - sy)
+        if typ[before] == LETTER or self.clue_id[d][before] is not None:
             return
-        in_w = self.in_woord[d]
-        patroon, nieuw, vast_enkel = [], 0, 0
+        in_w = self.in_word[d]
+        pattern, new, fixed_single = [], 0, 0
         i = sy * w + sx
         for L in range(1, max_l + 1):
             t = typ[i]
-            if t == BLOK:
+            if t == BLOCK:
                 return
             if t == LETTER:
                 if in_w[i] is not None:
                     return
-                patroon.append(self.letter[i])
+                pattern.append(self.letter[i])
             else:
-                # nieuwe letters mogen geen letterbuur dwars op het woord hebben
+                # new letters may not have a letter neighbour across the word
                 if d == R:
-                    b1 = typ[i - w] if sy > 0 else BLOK
-                    b2 = typ[i + w] if sy < h - 1 else BLOK
+                    b1 = typ[i - w] if sy > 0 else BLOCK
+                    b2 = typ[i + w] if sy < h - 1 else BLOCK
                 else:
                     x = i % w
-                    b1 = typ[i - 1] if x > 0 else BLOK
-                    b2 = typ[i + 1] if x < w - 1 else BLOK
+                    b1 = typ[i - 1] if x > 0 else BLOCK
+                    b2 = typ[i + 1] if x < w - 1 else BLOCK
                 if b1 == LETTER or b2 == LETTER:
                     return
-                if b1 == BLOK and b2 == BLOK:
-                    vast_enkel += 1
-                patroon.append(None)
-                nieuw += 1
-            i += stap
-            if L >= 2 and nieuw:
-                na = i if L < max_l or (w - sx if d == R else h - sy) > L else -1
-                if na < 0 or typ[na] != LETTER:
-                    yield L, patroon[:], nieuw, voor, na, vast_enkel
+                if b1 == BLOCK and b2 == BLOCK:
+                    fixed_single += 1
+                pattern.append(None)
+                new += 1
+            i += step
+            if L >= 2 and new:
+                after = i if L < max_l or (w - sx if d == R else h - sy) > L else -1
+                if after < 0 or typ[after] != LETTER:
+                    yield L, pattern[:], new, before, after, fixed_single
 
     def slot(self, sx, sy, d, L):
-        """(patroon, nieuw, voor, na) voor een woord van lengte L op (sx,sy), of None."""
-        for lengte, patroon, nieuw, voor, na, _ in self.loop(sx, sy, d):
-            if lengte == L:
-                return patroon, nieuw, voor, na
-            if lengte > L:
+        """(pattern, new, before, after) for a word of length L at (sx,sy), or None."""
+        for length, pattern, new, before, after, _ in self.walk(sx, sy, d):
+            if length == L:
+                return pattern, new, before, after
+            if length > L:
                 break
         return None
 
-    def plaats(self, sx, sy, d, woord):
-        info = self.slot(sx, sy, d, len(woord.cellen))
-        assert info is not None, "ongeldige plaatsing"
-        _, _, voor, na = info
-        wid = self.volgende_id
-        self.volgende_id += 1
-        self.type[voor] = BLOK
-        self.oms[d][voor] = wid
-        self.blok_refs[voor] += 1
-        if na >= 0:
-            self.type[na] = BLOK
-            self.blok_refs[na] += 1
-        stap = 1 if d == R else self.w
+    def place(self, sx, sy, d, word):
+        info = self.slot(sx, sy, d, len(word.cells))
+        assert info is not None, "invalid placement"
+        _, _, before, after = info
+        wid = self.next_id
+        self.next_id += 1
+        self.type[before] = BLOCK
+        self.clue_id[d][before] = wid
+        self.block_refs[before] += 1
+        if after >= 0:
+            self.type[after] = BLOCK
+            self.block_refs[after] += 1
+        step = 1 if d == R else self.w
         i = sy * self.w + sx
-        for cel in woord.cellen:
-            if self.type[i] == LEEG:
+        for cell in word.cells:
+            if self.type[i] == EMPTY:
                 self.type[i] = LETTER
-                self.letter[i] = cel
+                self.letter[i] = cell
                 self.n_letters += 1
             else:
-                self.n_dubbel += 1
-            self.in_woord[d][i] = wid
-            i += stap
-        self.woorden[wid] = (sx, sy, d, woord)
-        self.gebruikt.add(woord.tekst)
+                self.n_double += 1
+            self.in_word[d][i] = wid
+            i += step
+        self.words[wid] = (sx, sy, d, word)
+        self.used.add(word.text)
         return wid
 
-    def verwijder(self, wid):
-        """Verwijder een woord, plus (cascade) kruisende woorden waarvan de letters
-        anders als losse aangrenzende letters zonder woord zouden overblijven."""
-        wachtrij = [wid]
-        while wachtrij:
-            w0 = wachtrij.pop()
-            if w0 not in self.woorden:
+    def remove(self, wid):
+        """Remove a word, plus (cascade) crossing words whose letters would
+        otherwise remain as loose adjacent letters without a word."""
+        queue = [wid]
+        while queue:
+            w0 = queue.pop()
+            if w0 not in self.words:
                 continue
-            for cellen in self._verwijder_een(w0):
-                # cellen: opeenvolgende overgebleven letters van het verwijderde woord
-                for i in cellen[1:]:
+            for cells in self._remove_one(w0):
+                # cells: consecutive remaining letters of the removed word
+                for i in cells[1:]:
                     for d in (R, D):
-                        if self.in_woord[d][i] is not None:
-                            wachtrij.append(self.in_woord[d][i])
+                        if self.in_word[d][i] is not None:
+                            queue.append(self.in_word[d][i])
 
-    def _verwijder_een(self, wid):
-        """Verwijder één woord; geeft reeksen (>=2) van overgebleven letters terug."""
-        sx, sy, d, woord = self.woorden.pop(wid)
-        L = len(woord.cellen)
+    def _remove_one(self, wid):
+        """Remove one word; returns runs (>=2) of remaining letters."""
+        sx, sy, d, word = self.words.pop(wid)
+        L = len(word.cells)
         w = self.w
-        stap = 1 if d == R else w
+        step = 1 if d == R else w
         i = sy * w + sx
-        reeksen, reeks = [], []
+        runs, run = [], []
         for _ in range(L):
-            self.in_woord[d][i] = None
-            if self.in_woord[1 - d][i] is None:
-                self.type[i] = LEEG
+            self.in_word[d][i] = None
+            if self.in_word[1 - d][i] is None:
+                self.type[i] = EMPTY
                 self.letter[i] = None
                 self.n_letters -= 1
-                if len(reeks) >= 2:
-                    reeksen.append(reeks)
-                reeks = []
+                if len(run) >= 2:
+                    runs.append(run)
+                run = []
             else:
-                self.n_dubbel -= 1
-                reeks.append(i)
-            i += stap
-        if len(reeks) >= 2:
-            reeksen.append(reeks)
-        voor = sy * w + sx - 1 if d == R else (sy - 1) * w + sx
-        self.oms[d][voor] = None
-        self._laat_blok_los(voor)
+                self.n_double -= 1
+                run.append(i)
+            i += step
+        if len(run) >= 2:
+            runs.append(run)
+        before = sy * w + sx - 1 if d == R else (sy - 1) * w + sx
+        self.clue_id[d][before] = None
+        self._release_block(before)
         if d == R:
-            na = sy * w + sx + L if sx + L < w else -1
+            after = sy * w + sx + L if sx + L < w else -1
         else:
-            na = (sy + L) * w + sx if sy + L < self.h else -1
-        if na >= 0:
-            self._laat_blok_los(na)
-        self.gebruikt.discard(woord.tekst)
-        return reeksen
+            after = (sy + L) * w + sx if sy + L < self.h else -1
+        if after >= 0:
+            self._release_block(after)
+        self.used.discard(word.text)
+        return runs
 
-    def _laat_blok_los(self, i):
-        self.blok_refs[i] -= 1
-        if self.blok_refs[i] == 0:
-            self.type[i] = LEEG
+    def _release_block(self, i):
+        self.block_refs[i] -= 1
+        if self.block_refs[i] == 0:
+            self.type[i] = EMPTY
 
-    def bedekbaar(self, x, y):
-        """Kan lege cel (x,y) nog door een woord (structureel) bedekt worden?"""
+    def coverable(self, x, y):
+        """Can empty cell (x,y) still be (structurally) covered by a word?"""
         for d in (R, D):
             for off in range(self.max_len):
                 sx, sy = (x - off, y) if d == R else (x, y - off)
                 if sx < 0 or sy < 0:
                     break
-                for L, *_ in self.loop(sx, sy, d):
+                for L, *_ in self.walk(sx, sy, d):
                     if L > off:
                         return True
         return False
 
 
-# Gewichten voor de slotscore bij het groeien (zie Generator.slots).
-GEWICHTEN = dict(kruis=2.0, kost=0.6, vast_enkel=0.7, dood=1.5, twee=2.0, drie=0.0, lang=0.3, midden=0.0)
+# Weights for the slot score while growing (see Generator.slots).
+WEIGHTS = dict(cross=2.0, cost=0.6, fixed_single=0.7, dead=1.5, two=2.0, three=0.0, long=0.3, mid=0.0)
 
 
 class Generator:
-    def __init__(self, wb, w, h, max_len, rng, doel_dichtheid, gewichten=None):
-        self.wb, self.w, self.h, self.max_len, self.rng = wb, w, h, max_len, rng
-        self.doel = doel_dichtheid
-        self.g = dict(GEWICHTEN, **(gewichten or {}))
+    def __init__(self, wl, w, h, max_len, rng, target_density, weights=None):
+        self.wl, self.w, self.h, self.max_len, self.rng = wl, w, h, max_len, rng
+        self.target = target_density
+        self.g = dict(WEIGHTS, **(weights or {}))
 
-    # -- woordkeuze -----------------------------------------------------------
-    def kies_woord(self, ids):
-        steekproef = ids if len(ids) <= 40 else self.rng.sample(ids, 40)
-        # woorden met een handgeschreven omschrijving krijgen sterke voorkeur
-        gewichten = [(4.0 if self.wb.woorden[i].hand else 1.0) / math.sqrt(self.wb.woorden[i].rang + 50) for i in steekproef]
-        return self.wb.woorden[self.rng.choices(steekproef, gewichten)[0]]
+    # -- word choice ------------------------------------------------------
+    def choose_word(self, ids):
+        sample = ids if len(ids) <= 40 else self.rng.sample(ids, 40)
+        # words with a hand-written clue get a strong preference
+        weights = [(4.0 if self.wl.words[i].hand else 1.0) / math.sqrt(self.wl.words[i].rank + 50) for i in sample]
+        return self.wl.words[self.rng.choices(sample, weights)[0]]
 
-    # -- groeien --------------------------------------------------------------
-    def slots(self, rooster):
-        """Alle structureel geldige slots met een basisscore (zonder woordenboek)."""
-        uit = []
-        w, h = rooster.w, rooster.h
-        typ = rooster.type
+    # -- growing ------------------------------------------------------------
+    def slots(self, grid):
+        """All structurally valid slots with a base score (without the word list)."""
+        out = []
+        w, h = grid.w, grid.h
+        typ = grid.type
         rand = self.rng.random
         g = self.g
         for d in (R, D):
             for sy in range(1 if d == D else 0, h):
                 for sx in range(1 if d == R else 0, w):
-                    for L, patroon, nieuw, voor, na, vast_enkel in rooster.loop(sx, sy, d):
-                        kruis = L - nieuw
-                        kost = (typ[voor] == LEEG) + (na >= 0 and typ[na] == LEEG)
-                        score = nieuw + g["kruis"] * kruis - g["kost"] * kost - g["vast_enkel"] * vast_enkel + rand() * 0.5
+                    for L, pattern, new, before, after, fixed_single in grid.walk(sx, sy, d):
+                        cross = L - new
+                        cost = (typ[before] == EMPTY) + (after >= 0 and typ[after] == EMPTY)
+                        score = new + g["cross"] * cross - g["cost"] * cost - g["fixed_single"] * fixed_single + rand() * 0.5
                         if L == 2:
-                            score -= g["twee"]
+                            score -= g["two"]
                         elif L == 3:
-                            score -= g["drie"]
+                            score -= g["three"]
                         elif L >= 8:
-                            score -= g["lang"] * (L - 7)
+                            score -= g["long"] * (L - 7)
                         elif 5 <= L <= 7:
-                            score += g["midden"]
-                        uit.append((score, sx, sy, d, L, patroon, nieuw, voor, na))
-        uit.sort(key=lambda s: -s[0])
-        return uit
+                            score += g["mid"]
+                        out.append((score, sx, sy, d, L, pattern, new, before, after))
+        out.sort(key=lambda s: -s[0])
+        return out
 
-    def dode_cellen(self, rooster, sx, sy, d, L, voor, na):
-        """Aantal lege cellen dat na plaatsing niet meer bedekbaar zou zijn (simulatie)."""
-        w = rooster.w
-        proef = rooster.copy()
-        # plaats een dummy-woord met unieke letters ('?' komt in geen enkel woord voor)
-        dummy = Woord("?" * L, tuple("?" * L), 0, [])
-        proef.plaats(sx, sy, d, dummy)
-        te_checken = set()
-        stap = 1 if d == R else w
+    def dead_cells(self, grid, sx, sy, d, L, before, after):
+        """Number of empty cells that would no longer be coverable after
+        placement (simulation)."""
+        w = grid.w
+        trial = grid.copy()
+        # place a dummy word with unique letters ('?' occurs in no real word)
+        dummy = Word("?" * L, tuple("?" * L), 0, [])
+        trial.place(sx, sy, d, dummy)
+        to_check = set()
+        step = 1 if d == R else w
         i = sy * w + sx
         for _ in range(L):
             x, y = i % w, i // w
-            buren = [(x, y - 1), (x, y + 1)] if d == R else [(x - 1, y), (x + 1, y)]
-            te_checken.update(buren)
-            i += stap
-        for b in (voor, na):
+            neighbours = [(x, y - 1), (x, y + 1)] if d == R else [(x - 1, y), (x + 1, y)]
+            to_check.update(neighbours)
+            i += step
+        for b in (before, after):
             if b >= 0:
                 x, y = b % w, b // w
-                te_checken.update([(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)])
-        dood = 0
-        for x, y in te_checken:
-            if 0 <= x < w and 0 <= y < rooster.h and proef.type[y * w + x] == LEEG:
-                if rooster.bedekbaar(x, y) and not proef.bedekbaar(x, y):
-                    dood += 1
-        return dood
+                to_check.update([(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)])
+        dead = 0
+        for x, y in to_check:
+            if 0 <= x < w and 0 <= y < grid.h and trial.type[y * w + x] == EMPTY:
+                if grid.coverable(x, y) and not trial.coverable(x, y):
+                    dead += 1
+        return dead
 
-    def groei(self, rooster, max_stappen=10 ** 6):
-        """Plaats gretig woorden tot er geen slot met kandidaten meer is."""
-        max_twee = max(2, rooster.w * rooster.h // 60)   # tweeletterwoorden zijn noodvulling
-        for _ in range(max_stappen):
-            n_twee = sum(1 for _, _, _, wd in rooster.woorden.values() if len(wd.cellen) == 2)
-            beste = []
-            for s in self.slots(rooster):
-                score, sx, sy, d, L, patroon, nieuw, voor, na = s
-                if beste and score + 2.5 < beste[-1][0]:
-                    break  # verder omlaag wint toch niets meer
-                if L == 2 and n_twee >= max_twee:
+    def grow(self, grid, max_steps=10 ** 6):
+        """Greedily place words until no slot with candidates remains."""
+        max_two = max(2, grid.w * grid.h // 60)   # two-letter words are emergency filler
+        for _ in range(max_steps):
+            n_two = sum(1 for _, _, _, wd in grid.words.values() if len(wd.cells) == 2)
+            best = []
+            for s in self.slots(grid):
+                score, sx, sy, d, L, pattern, new, before, after = s
+                if best and score + 2.5 < best[-1][0]:
+                    break  # nothing further down can win anyway
+                if L == 2 and n_two >= max_two:
                     continue
-                ids = self.wb.kandidaten(patroon, rooster.gebruikt)
+                ids = self.wl.candidates(pattern, grid.used)
                 if not ids:
                     continue
-                dood = self.dode_cellen(rooster, sx, sy, d, L, voor, na)
-                beste.append((score - self.g["dood"] * dood, sx, sy, d, L, ids))
-                if len(beste) >= 10:
+                dead = self.dead_cells(grid, sx, sy, d, L, before, after)
+                best.append((score - self.g["dead"] * dead, sx, sy, d, L, ids))
+                if len(best) >= 10:
                     break
-            if not beste:
+            if not best:
                 return
-            beste.sort(key=lambda s: -s[0])
-            top = beste[:3]
-            gewichten = [3, 2, 1][:len(top)]
-            _, sx, sy, d, L, ids = self.rng.choices(top, gewichten)[0]
-            rooster.plaats(sx, sy, d, self.kies_woord(ids))
+            best.sort(key=lambda s: -s[0])
+            top = best[:3]
+            weights = [3, 2, 1][:len(top)]
+            _, sx, sy, d, L, ids = self.rng.choices(top, weights)[0]
+            grid.place(sx, sy, d, self.choose_word(ids))
 
-    def anker(self, rooster):
+    def anchor(self, grid):
         L = min(self.max_len, self.w - 3)
         L = self.rng.randint(max(4, L - 2), L)
         sx = self.rng.randint(1, self.w - L - 1)
-        info = rooster.slot(sx, 1, R, L)
-        ids = self.wb.kandidaten(info[0], rooster.gebruikt)
-        rooster.plaats(sx, 1, R, self.kies_woord(ids))
+        info = grid.slot(sx, 1, R, L)
+        ids = self.wl.candidates(info[0], grid.used)
+        grid.place(sx, 1, R, self.choose_word(ids))
 
-    # -- verbeteren -----------------------------------------------------------
-    def doelwit(self, rooster):
-        """Kies woorden om te verwijderen: rond een lege cel of een enkel gekruiste letter."""
-        w, h = rooster.w, rooster.h
+    # -- improving -----------------------------------------------------------
+    def target_words(self, grid):
+        """Choose words to remove: around an empty cell or a singly-crossed letter."""
+        w, h = grid.w, grid.h
         rng = self.rng
-        leeg = [i for i, t in enumerate(rooster.type) if t == LEEG]
-        enkel = [i for i, t in enumerate(rooster.type)
-                 if t == LETTER and (rooster.in_woord[R][i] is None or rooster.in_woord[D][i] is None)]
-        if leeg and (not enkel or rng.random() < 0.5):
-            middel = rng.choice(leeg)
-        elif enkel:
-            middel = rng.choice(enkel)
+        empty = [i for i, t in enumerate(grid.type) if t == EMPTY]
+        single = [i for i, t in enumerate(grid.type)
+                  if t == LETTER and (grid.in_word[R][i] is None or grid.in_word[D][i] is None)]
+        if empty and (not single or rng.random() < 0.5):
+            middle = rng.choice(empty)
+        elif single:
+            middle = rng.choice(single)
         else:
-            return rng.sample(list(rooster.woorden), min(2, len(rooster.woorden)))
-        x, y = middel % w, middel // w
-        straal = rng.choice((1, 1, 2))
-        buurt = set()
-        for dy in range(-straal, straal + 1):
-            for dx in range(-straal, straal + 1):
+            return rng.sample(list(grid.words), min(2, len(grid.words)))
+        x, y = middle % w, middle // w
+        radius = rng.choice((1, 1, 2))
+        area = set()
+        for dy in range(-radius, radius + 1):
+            for dx in range(-radius, radius + 1):
                 nx, ny = x + dx, y + dy
                 if 0 <= nx < w and 0 <= ny < h:
                     j = ny * w + nx
                     for d in (R, D):
-                        if rooster.in_woord[d][j] is not None:
-                            buurt.add(rooster.in_woord[d][j])
-                        if rooster.oms[d][j] is not None:
-                            buurt.add(rooster.oms[d][j])
-        buurt = list(buurt)
-        k = min(len(buurt), rng.choice((1, 2, 2, 3)))
-        return rng.sample(buurt, k) if buurt else []
+                        if grid.in_word[d][j] is not None:
+                            area.add(grid.in_word[d][j])
+                        if grid.clue_id[d][j] is not None:
+                            area.add(grid.clue_id[d][j])
+        area = list(area)
+        k = min(len(area), rng.choice((1, 2, 2, 3)))
+        return rng.sample(area, k) if area else []
 
-    def verbeter(self, rooster, iteraties, deadline, stil=500):
-        """Ruin and recreate: verwijder enkele woorden rond een zwakke plek en groei opnieuw."""
-        huidig = rooster
-        beste = huidig.copy()
-        zonder_winst = 0
-        for _ in range(iteraties):
+    def improve(self, grid, iterations, deadline, stale=500):
+        """Ruin and recreate: remove a few words around a weak spot and grow again."""
+        current = grid
+        best = current.copy()
+        no_gain = 0
+        for _ in range(iterations):
             if time.time() > deadline:
                 break
-            kand = huidig.copy()
-            for wid in self.doelwit(kand):
-                if wid in kand.woorden:
-                    kand.verwijder(wid)
-            self.groei(kand)
-            if kand.waarde() >= huidig.waarde():
-                huidig = kand
-            if huidig.waarde() > beste.waarde():
-                beste = huidig.copy()
-                zonder_winst = 0
+            candidate = current.copy()
+            for wid in self.target_words(candidate):
+                if wid in candidate.words:
+                    candidate.remove(wid)
+            self.grow(candidate)
+            if candidate.value() >= current.value():
+                current = candidate
+            if current.value() > best.value():
+                best = current.copy()
+                no_gain = 0
             else:
-                zonder_winst += 1
-                if zonder_winst >= stil:
+                no_gain += 1
+                if no_gain >= stale:
                     break
-        return beste
+        return best
 
-    def maak(self, tijd_limiet, iteraties, herstarts=6):
-        """Groei + verbeter, met herstarts; het beste rooster binnen de tijd wint."""
-        deadline = time.time() + tijd_limiet
-        beste = None
-        for _ in range(herstarts):
-            rooster = Rooster(self.w, self.h, self.max_len)
-            self.anker(rooster)
-            self.groei(rooster)
-            rooster = self.verbeter(rooster, iteraties, deadline)
-            if beste is None or rooster.waarde() > beste.waarde():
-                beste = rooster
-            if beste.dichtheid() >= self.doel or time.time() > deadline:
+    def build(self, time_limit, iterations, restarts=6):
+        """Grow + improve, with restarts; the best grid within the time wins."""
+        deadline = time.time() + time_limit
+        best = None
+        for _ in range(restarts):
+            grid = Grid(self.w, self.h, self.max_len)
+            self.anchor(grid)
+            self.grow(grid)
+            grid = self.improve(grid, iterations, deadline)
+            if best is None or grid.value() > best.value():
+                best = grid
+            if best.density() >= self.target or time.time() > deadline:
                 break
-        return beste
+        return best
 
 
-# -- oplossingswoord en export ---------------------------------------------------
+# -- solution word and export ---------------------------------------------------
 
-def kies_oplossing(rooster, wb, rng):
-    voorraad = Counter(rooster.letter[i] for i in range(rooster.w * rooster.h) if rooster.type[i] == LETTER)
-    kandidaten = [wd for wd in wb.woorden
-                  if 4 <= len(wd.cellen) <= 8 and 0 < wd.rang <= 4000
-                  and wd.tekst not in rooster.gebruikt
-                  and not (Counter(wd.cellen) - voorraad)]
-    if not kandidaten:
+def pick_solution(grid, wl, rng):
+    stock = Counter(grid.letter[i] for i in range(grid.w * grid.h) if grid.type[i] == LETTER)
+    candidates = [wd for wd in wl.words
+                  if 4 <= len(wd.cells) <= 8 and 0 < wd.rank <= 4000
+                  and wd.text not in grid.used
+                  and not (Counter(wd.cells) - stock)]
+    if not candidates:
         return None
-    woord = rng.choice(kandidaten)
-    per_letter = defaultdict(list)
-    for i in range(rooster.w * rooster.h):
-        if rooster.type[i] == LETTER:
-            per_letter[rooster.letter[i]].append(i)
-    cellen = []
-    for cel in woord.cellen:
-        i = rng.choice(per_letter[cel])
-        per_letter[cel].remove(i)
-        cellen.append([i % rooster.w, i // rooster.w])
-    return {"woord": woord.tekst, "cellen": cellen}
+    word = rng.choice(candidates)
+    by_letter = defaultdict(list)
+    for i in range(grid.w * grid.h):
+        if grid.type[i] == LETTER:
+            by_letter[grid.letter[i]].append(i)
+    cells = []
+    for cell in word.cells:
+        i = rng.choice(by_letter[cell])
+        by_letter[cell].remove(i)
+        cells.append([i % grid.w, i // grid.w])
+    return {"word": word.text, "cells": cells}
 
 
-def exporteer(rooster, wb, rng, titel, sterren):
-    w, h = rooster.w, rooster.h
-    oplossing = kies_oplossing(rooster, wb, rng)
-    nummers = {}
-    if oplossing:
-        for n, (x, y) in enumerate(oplossing["cellen"], 1):
-            nummers[y * w + x] = n
+def export(grid, wl, rng, title, stars, lang):
+    w, h = grid.w, grid.h
+    solution = pick_solution(grid, wl, rng)
+    numbers = {}
+    if solution:
+        for n, (x, y) in enumerate(solution["cells"], 1):
+            numbers[y * w + x] = n
 
-    # omschrijvingen kiezen en woorden in leesvolgorde (op omschrijvingscel, R eerst)
-    def sleutel(item):
-        wid, (sx, sy, d, woord) = item
+    # pick clues and words in reading order (by clue cell, R first)
+    def key(item):
+        wid, (sx, sy, d, word) = item
         return ((sy, sx - 1, d) if d == R else (sy - 1, sx, d))
-    woorden, oms_per_cel = [], defaultdict(dict)
-    for nr, (wid, (sx, sy, d, woord)) in enumerate(sorted(rooster.woorden.items(), key=sleutel), 1):
-        txt = "\n".join(wrap_omschrijving(rng.choice(woord.oms)))
-        if txt.startswith("Ij"):  # IJ is één letter, dus ook als hoofdletter
-            txt = "IJ" + txt[2:]
-        van = [sx - 1, sy] if d == R else [sx, sy - 1]
-        oms_per_cel[van[1] * w + van[0]][RICHTING[d]] = txt
-        woorden.append({"id": nr, "antwoord": woord.tekst, "oms": txt, "dir": RICHTING[d],
-                        "van": van, "start": [sx, sy]})
+    words, clues_per_cell = [], defaultdict(dict)
+    for nr, (wid, (sx, sy, d, word)) in enumerate(sorted(grid.words.items(), key=key), 1):
+        txt = "\n".join(wrap_clue(rng.choice(word.clues)))
+        txt = fix_clue_capitalization(txt, lang)
+        clue_from = [sx - 1, sy] if d == R else [sx, sy - 1]
+        clues_per_cell[clue_from[1] * w + clue_from[0]][DIRS[d]] = txt
+        words.append({"id": nr, "answer": word.text, "clue": txt, "dir": DIRS[d],
+                      "from": clue_from, "start": [sx, sy]})
 
-    cellen = []
+    cells = []
     for y in range(h):
-        rij = []
+        row = []
         for x in range(w):
             i = y * w + x
-            if rooster.type[i] == LETTER:
-                cel = {"t": "L", "s": rooster.letter[i]}
-                if i in nummers:
-                    cel["n"] = nummers[i]
-            elif i in oms_per_cel:
-                cel = {"t": "O", "oms": [{"txt": oms_per_cel[i][d], "dir": d} for d in ("R", "D") if d in oms_per_cel[i]]}
+            if grid.type[i] == LETTER:
+                cell = {"t": "L", "s": grid.letter[i]}
+                if i in numbers:
+                    cell["n"] = numbers[i]
+            elif i in clues_per_cell:
+                cell = {"t": "C", "clues": [{"text": clues_per_cell[i][d], "dir": d} for d in ("R", "D") if d in clues_per_cell[i]]}
             else:
-                cel = {"t": "X"}
-            rij.append(cel)
-        cellen.append(rij)
-    puzzel = {"versie": 1, "titel": titel, "sterren": sterren, "w": w, "h": h,
-              "cellen": cellen, "woorden": woorden}
-    if oplossing:
-        puzzel["oplossing"] = oplossing
-    return puzzel
+                cell = {"t": "X"}
+            row.append(cell)
+        cells.append(row)
+    puzzle = {"version": 2, "lang": lang, "title": title, "stars": stars, "w": w, "h": h,
+              "cells": cells, "words": words}
+    if solution:
+        puzzle["solution"] = solution
+    return puzzle
 
 
-def schrijf_json(puzzel, pad):
-    """Compact maar leesbaar: één regel per rij cellen en per woord."""
-    delen = []
-    for k, v in puzzel.items():
-        if k in ("cellen", "woorden"):
-            regels = ",\n    ".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) for r in v)
-            delen.append(f'  "{k}": [\n    {regels}\n  ]')
+def write_json(puzzle, path):
+    """Compact but readable: one line per cell row and per word."""
+    parts = []
+    for k, v in puzzle.items():
+        if k in ("cells", "words"):
+            lines = ",\n    ".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) for r in v)
+            parts.append(f'  "{k}": [\n    {lines}\n  ]')
         else:
-            delen.append(f'  "{k}": {json.dumps(v, ensure_ascii=False)}')
-    with open(pad, "w", encoding="utf-8") as f:
-        f.write("{\n" + ",\n".join(delen) + "\n}\n")
+            parts.append(f'  "{k}": {json.dumps(v, ensure_ascii=False)}')
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("{\n" + ",\n".join(parts) + "\n}\n")
 
 
-def genereer(sterren=4, seed=1, w=None, h=None, tijd=30.0, iteraties=3000, wb=None, data_dir=None,
-             gewichten=None, herstarts=6):
-    """Maak één puzzel; geeft (puzzel-dict, rooster, seconden)."""
-    conf = STERREN[sterren]
+def generate(stars=4, seed=1, w=None, h=None, lang="nl", time_limit=30.0, iterations=3000, wl=None, data_dir=None,
+             weights=None, restarts=6):
+    """Build one puzzle; returns (puzzle dict, grid, seconds)."""
+    conf = STARS[stars]
     w = w or conf["w"]
     h = h or conf["h"]
-    # t/m 4 sterren alleen woorden met handgeschreven omschrijving (de
-    # Wiktionary-omschrijvingen zijn te vaak onbruikbaar); 5 sterren mag alles
-    wb = wb or Woordenboek(conf["max_rang"], conf["max_len"], data_dir, alleen_hand=sterren <= 4)
+    # up to 4 stars only words with a hand-written clue (the Wiktionary clues
+    # are too often unusable); 5 stars allows everything
+    wl = wl or WordList(conf["max_rank"], conf["max_len"], lang, data_dir, hand_only=stars <= 4)
     rng = random.Random(seed)
     t0 = time.time()
-    gen = Generator(wb, w, h, conf["max_len"], rng, conf["dichtheid"], gewichten)
-    rooster = gen.maak(tijd, iteraties, herstarts)
-    titel = f"Zweeds {sterren}★ #{seed}"
-    puzzel = exporteer(rooster, wb, rng, titel, sterren)
-    return puzzel, rooster, time.time() - t0
+    gen = Generator(wl, w, h, conf["max_len"], rng, conf["density"], weights)
+    grid = gen.build(time_limit, iterations, restarts)
+    title = LANGUAGES[lang]["title"].format(stars=stars, seed=seed)
+    puzzle = export(grid, wl, rng, title, stars, lang)
+    return puzzle, grid, time.time() - t0
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="Genereer Zweedse puzzels (JSON, zie puzzles/FORMAT.md).")
-    ap.add_argument("--sterren", type=int, default=4, choices=range(1, 6), help="moeilijkheid 1-5 (standaard 4)")
-    ap.add_argument("--aantal", type=int, default=1, help="aantal puzzels")
-    ap.add_argument("--seed", type=int, default=1, help="seed van de eerste puzzel; volgende puzzels tellen op")
-    ap.add_argument("--uit", default="puzzles/generated", help="uitvoermap")
-    ap.add_argument("--breedte", type=int, help="roosterbreedte (overschrijft de sterrentabel)")
-    ap.add_argument("--hoogte", type=int, help="roosterhoogte (overschrijft de sterrentabel)")
-    ap.add_argument("--tijd", type=float, default=30.0, help="maximale seconden per puzzel (standaard 30)")
-    ap.add_argument("--iteraties", type=int, default=3000, help="verbeterstappen per herstart (standaard 3000)")
-    ap.add_argument("--herstarts", type=int, default=6, help="aantal herstarts per puzzel (standaard 6)")
+    ap = argparse.ArgumentParser(description="Generate arrowword puzzles (JSON, see docs/PUZZLE_FORMAT.md).")
+    ap.add_argument("--lang", default="nl", help="language code, selects generator/data/<lang>/ (default nl)")
+    ap.add_argument("--stars", type=int, default=4, choices=range(1, 6), help="difficulty 1-5 (default 4)")
+    ap.add_argument("--count", type=int, default=1, help="number of puzzles")
+    ap.add_argument("--seed", type=int, default=1, help="seed of the first puzzle; later puzzles count up")
+    ap.add_argument("--out", default="puzzles/generated", help="output directory")
+    ap.add_argument("--width", type=int, help="grid width (overrides the stars table)")
+    ap.add_argument("--height", type=int, help="grid height (overrides the stars table)")
+    ap.add_argument("--time", type=float, default=30.0, help="maximum seconds per puzzle (default 30)")
+    ap.add_argument("--iterations", type=int, default=3000, help="improve steps per restart (default 3000)")
+    ap.add_argument("--restarts", type=int, default=6, help="number of restarts per puzzle (default 6)")
     args = ap.parse_args(argv)
 
-    conf = STERREN[args.sterren]
-    wb = Woordenboek(conf["max_rang"], conf["max_len"], alleen_hand=args.sterren <= 4)
-    os.makedirs(args.uit, exist_ok=True)
-    for k in range(args.aantal):
+    require_word_list(args.lang)
+    conf = STARS[args.stars]
+    wl = WordList(conf["max_rank"], conf["max_len"], args.lang, hand_only=args.stars <= 4)
+    os.makedirs(args.out, exist_ok=True)
+    for k in range(args.count):
         seed = args.seed + k
-        puzzel, rooster, sec = genereer(args.sterren, seed, args.breedte, args.hoogte, args.tijd, args.iteraties, wb,
-                                        herstarts=args.herstarts)
-        pad = os.path.join(args.uit, f"zweeds-{args.sterren}ster-{seed:04d}.json")
-        schrijf_json(puzzel, pad)
-        n = rooster.w * rooster.h
-        print(f"{pad}: {rooster.w}x{rooster.h}, {rooster.n_letters}/{n} letters "
-              f"({100 * rooster.n_letters / n:.0f}%), {rooster.n_dubbel} dubbel gekruist, "
-              f"{len(rooster.woorden)} woorden, {sec:.1f} s")
+        puzzle, grid, sec = generate(args.stars, seed, args.width, args.height, args.lang, args.time, args.iterations,
+                                      wl, restarts=args.restarts)
+        path = os.path.join(args.out, f"{args.lang}-{args.stars}star-{seed:04d}.json")
+        write_json(puzzle, path)
+        n = grid.w * grid.h
+        print(f"{path}: {grid.w}x{grid.h}, {grid.n_letters}/{n} letters "
+              f"({100 * grid.n_letters / n:.0f}%), {grid.n_double} double-crossed, "
+              f"{len(grid.words)} words, {sec:.1f} s")
 
 
 if __name__ == "__main__":

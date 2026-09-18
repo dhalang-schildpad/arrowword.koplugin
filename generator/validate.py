@@ -1,170 +1,160 @@
 #!/usr/bin/env python3
-"""Valideer puzzelbestanden volgens puzzles/FORMAT.md.
+"""Validate puzzle files against docs/PUZZLE_FORMAT.md (version 2).
 
-Gebruik: python3 generator/validate.py puzzles/*.json
-Exitcode 1 bij fouten; waarschuwingen zijn informatief.
+Usage: python3 generator/validate.py puzzles/*.json
+Exit code 1 on errors; warnings are informational.
 """
 import json
+import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from words import MAX_CHARS, MAX_LINES, MAX_SINGLE_WORD, split_letters  # noqa: E402
+
 DIRS = {"R": (1, 0), "D": (0, 1), "RD": (1, 0), "DR": (0, 1)}
 STEP = {"R": (1, 0), "D": (0, 1), "RD": (0, 1), "DR": (1, 0)}
-MAX_REGELS, MAX_TEKENS = 2, 9
-MAX_LOS_WOORD = 11  # een los woord mag langer zijn; de plugin verkleint dan het lettertype
 
 
-def split_letters(antwoord):
-    """Splits een antwoord in cellen; IJ is één cel."""
-    out, i = [], 0
-    while i < len(antwoord):
-        if antwoord[i:i + 2] == "IJ":
-            out.append("IJ")
-            i += 2
-        else:
-            out.append(antwoord[i])
-            i += 1
-    return out
-
-
-def valideer(pad):
-    fouten, waarsch = [], []
-    with open(pad, encoding="utf-8") as f:
+def validate_puzzle(path):
+    errors, warnings = [], []
+    with open(path, encoding="utf-8") as f:
         p = json.load(f)
 
+    lang = p.get("lang", "nl")
     w, h = p["w"], p["h"]
-    cellen = p["cellen"]
-    if len(cellen) != h or any(len(r) != w for r in cellen):
-        return [f"afmetingen {w}x{h} kloppen niet met 'cellen'"], []
+    cells = p["cells"]
+    if len(cells) != h or any(len(r) != w for r in cells):
+        return [f"dimensions {w}x{h} do not match 'cells'"], []
 
-    def cel(x, y):
+    def cell(x, y):
         if 0 <= x < w and 0 <= y < h:
-            return cellen[y][x]
+            return cells[y][x]
         return None
 
     def is_letter(x, y):
-        c = cel(x, y)
+        c = cell(x, y)
         return c is not None and c["t"] == "L"
 
-    # woorden vs cellen
-    gebruikt = {}  # (x,y) -> aantal woorden
-    oms_gezien = {}  # (van, dir) -> aantal woorden
-    for wd in p["woorden"]:
+    # words vs cells
+    used = {}  # (x,y) -> number of words
+    clues_seen = {}  # (from, dir) -> number of words
+    for wd in p["words"]:
         d = wd["dir"]
-        vx, vy = wd["van"]
+        vx, vy = wd["from"]
         sx, sy = wd["start"]
-        naam = f"woord {wd['id']} ({wd['antwoord']})"
+        name = f"word {wd['id']} ({wd['answer']})"
         if d not in DIRS:
-            fouten.append(f"{naam}: onbekende richting {d}")
+            errors.append(f"{name}: unknown direction {d}")
             continue
         ox, oy = DIRS[d]
         if (sx, sy) != (vx + ox, vy + oy):
-            fouten.append(f"{naam}: start {wd['start']} ligt niet naast omschrijvingscel {wd['van']}")
-        oc = cel(vx, vy)
-        if oc is None or oc["t"] != "O":
-            fouten.append(f"{naam}: 'van' {wd['van']} is geen omschrijvingscel")
+            errors.append(f"{name}: start {wd['start']} is not next to clue cell {wd['from']}")
+        oc = cell(vx, vy)
+        if oc is None or oc["t"] != "C":
+            errors.append(f"{name}: 'from' {wd['from']} is not a clue cell")
         else:
-            past = [o for o in oc["oms"] if o["dir"] == d]
-            if not past:
-                fouten.append(f"{naam}: omschrijvingscel {wd['van']} heeft geen omschrijving met richting {d}")
-            elif past[0]["txt"] != wd["oms"]:
-                fouten.append(f"{naam}: omschrijving '{wd['oms']}' wijkt af van cel ('{past[0]['txt']}')")
-        oms_gezien[(vx, vy, d)] = oms_gezien.get((vx, vy, d), 0) + 1
+            fitting = [c for c in oc["clues"] if c["dir"] == d]
+            if not fitting:
+                errors.append(f"{name}: clue cell {wd['from']} has no clue with direction {d}")
+            elif fitting[0]["text"] != wd["clue"]:
+                errors.append(f"{name}: clue '{wd['clue']}' differs from the cell ('{fitting[0]['text']}')")
+        clues_seen[(vx, vy, d)] = clues_seen.get((vx, vy, d), 0) + 1
 
         stx, sty = STEP[d]
-        letters = split_letters(wd["antwoord"])
+        letters = split_letters(wd["answer"], lang)
         x, y = sx, sy
         for i, letter in enumerate(letters):
-            c = cel(x, y)
+            c = cell(x, y)
             if c is None or c["t"] != "L":
-                fouten.append(f"{naam}: cel ({x},{y}) is geen lettercel")
+                errors.append(f"{name}: cell ({x},{y}) is not a letter cell")
                 break
             if c["s"] != letter:
-                fouten.append(f"{naam}: cel ({x},{y}) bevat '{c['s']}', verwacht '{letter}'")
-            gebruikt[(x, y)] = gebruikt.get((x, y), 0) + 1
+                errors.append(f"{name}: cell ({x},{y}) contains '{c['s']}', expected '{letter}'")
+            used[(x, y)] = used.get((x, y), 0) + 1
             x, y = x + stx, y + sty
         if is_letter(x, y):
-            fouten.append(f"{naam}: loopt door na de laatste letter op ({x},{y})")
+            errors.append(f"{name}: runs on past the last letter at ({x},{y})")
         if len(letters) < 2:
-            fouten.append(f"{naam}: korter dan 2 letters")
+            errors.append(f"{name}: shorter than 2 letters")
 
-        # kwaliteit
-        regels = wd["oms"].split("\n")
-        if len(regels) > MAX_REGELS or any(len(r) > (MAX_TEKENS if " " in r else MAX_LOS_WOORD) for r in regels):
-            waarsch.append(f"{naam}: omschrijving '{wd['oms']}' past mogelijk niet in een cel")
-        stam = wd["antwoord"].lower()[:4]
-        if len(stam) >= 4 and stam in wd["oms"].lower():
-            waarsch.append(f"{naam}: omschrijving bevat de stam van het antwoord")
+        # quality
+        lines = wd["clue"].split("\n")
+        if len(lines) > MAX_LINES or any(len(r) > (MAX_CHARS if " " in r else MAX_SINGLE_WORD) for r in lines):
+            warnings.append(f"{name}: clue '{wd['clue']}' may not fit in a cell")
+        stem = wd["answer"].lower()[:4]
+        if len(stem) >= 4 and stem in wd["clue"].lower():
+            warnings.append(f"{name}: clue contains the stem of the answer")
 
-    # omschrijvingen zonder woord
-    n_x = n_o = n_l = 0
+    # clues without a word
+    n_x = n_c = n_l = 0
     for y in range(h):
         for x in range(w):
-            c = cellen[y][x]
+            c = cells[y][x]
             if c["t"] == "X":
                 n_x += 1
-            elif c["t"] == "O":
-                n_o += 1
-                if not 1 <= len(c.get("oms", [])) <= 2:
-                    fouten.append(f"omschrijvingscel ({x},{y}) heeft {len(c.get('oms', []))} omschrijvingen")
-                for o in c.get("oms", []):
-                    if oms_gezien.get((x, y, o["dir"]), 0) != 1:
-                        fouten.append(f"omschrijving '{o['txt']}' op ({x},{y}) heeft {oms_gezien.get((x, y, o['dir']), 0)} woorden")
+            elif c["t"] == "C":
+                n_c += 1
+                if not 1 <= len(c.get("clues", [])) <= 2:
+                    errors.append(f"clue cell ({x},{y}) has {len(c.get('clues', []))} clues")
+                for cl in c.get("clues", []):
+                    if clues_seen.get((x, y, cl["dir"]), 0) != 1:
+                        errors.append(f"clue '{cl['text']}' at ({x},{y}) has {clues_seen.get((x, y, cl['dir']), 0)} words")
             elif c["t"] == "L":
                 n_l += 1
-                if (x, y) not in gebruikt:
-                    fouten.append(f"lettercel ({x},{y}) '{c['s']}' zit in geen enkel woord")
+                if (x, y) not in used:
+                    errors.append(f"letter cell ({x},{y}) '{c['s']}' is not part of any word")
                 if not re.fullmatch(r"[A-Z]|IJ", c["s"]):
-                    fouten.append(f"lettercel ({x},{y}) heeft ongeldige letter '{c['s']}'")
+                    errors.append(f"letter cell ({x},{y}) has an invalid letter '{c['s']}'")
             else:
-                fouten.append(f"cel ({x},{y}) heeft onbekend type '{c['t']}'")
+                errors.append(f"cell ({x},{y}) has unknown type '{c['t']}'")
 
-    # aaneengesloten reeksen van >=2 letters moeten precies één woord zijn
-    starts_r = {(wd["start"][0], wd["start"][1]) for wd in p["woorden"] if STEP[wd["dir"]] == (1, 0)}
-    starts_d = {(wd["start"][0], wd["start"][1]) for wd in p["woorden"] if STEP[wd["dir"]] == (0, 1)}
+    # runs of >=2 adjacent letters must be exactly one word
+    starts_r = {(wd["start"][0], wd["start"][1]) for wd in p["words"] if STEP[wd["dir"]] == (1, 0)}
+    starts_d = {(wd["start"][0], wd["start"][1]) for wd in p["words"] if STEP[wd["dir"]] == (0, 1)}
     for y in range(h):
         for x in range(w):
             if is_letter(x, y) and not is_letter(x - 1, y) and is_letter(x + 1, y) and (x, y) not in starts_r:
-                fouten.append(f"horizontale letterreeks vanaf ({x},{y}) zonder omschrijving")
+                errors.append(f"horizontal letter run starting at ({x},{y}) has no clue")
             if is_letter(x, y) and not is_letter(x, y - 1) and is_letter(x, y + 1) and (x, y) not in starts_d:
-                fouten.append(f"verticale letterreeks vanaf ({x},{y}) zonder omschrijving")
+                errors.append(f"vertical letter run starting at ({x},{y}) has no clue")
 
-    # oplossingswoord
-    opl = p.get("oplossing")
-    if opl:
+    # solution word
+    sol = p.get("solution")
+    if sol:
         letters = []
-        for i, (x, y) in enumerate(opl["cellen"]):
-            c = cel(x, y)
+        for i, (x, y) in enumerate(sol["cells"]):
+            c = cell(x, y)
             if c is None or c["t"] != "L":
-                fouten.append(f"oplossing: cel {i + 1} ({x},{y}) is geen lettercel")
+                errors.append(f"solution: cell {i + 1} ({x},{y}) is not a letter cell")
                 continue
             if c.get("n") != i + 1:
-                fouten.append(f"oplossing: cel ({x},{y}) heeft nummer {c.get('n')}, verwacht {i + 1}")
+                errors.append(f"solution: cell ({x},{y}) has number {c.get('n')}, expected {i + 1}")
             letters.append(c["s"])
-        if "".join(letters) != opl["woord"]:
-            fouten.append(f"oplossing: cellen vormen '{''.join(letters)}', verwacht '{opl['woord']}'")
+        if "".join(letters) != sol["word"]:
+            errors.append(f"solution: cells spell '{''.join(letters)}', expected '{sol['word']}'")
 
-    enkel = sum(1 for v in gebruikt.values() if v == 1)
-    tot = w * h
-    waarsch.append(f"kwaliteit: {n_l}/{tot} letters ({100 * n_l // tot}%), {n_o} omschrijvingscellen, "
-                   f"{n_x} leeg ({100 * n_x // tot}%), {enkel}/{n_l} letters maar één keer gekruist")
-    return fouten, waarsch
+    single = sum(1 for v in used.values() if v == 1)
+    total = w * h
+    warnings.append(f"quality: {n_l}/{total} letters ({100 * n_l // total}%), {n_c} clue cells, "
+                     f"{n_x} empty ({100 * n_x // total}%), {single}/{n_l} letters crossed only once")
+    return errors, warnings
 
 
-def main(paden):
+def main(paths):
     exit_code = 0
-    for pad in paden:
-        fouten, waarsch = valideer(pad)
-        status = "FOUT" if fouten else "OK"
-        print(f"{status}  {pad}")
-        for f in fouten:
-            print(f"  fout: {f}")
-        for wa in waarsch:
-            print(f"  let op: {wa}")
-        if fouten:
+    for path in paths:
+        errors, warnings = validate_puzzle(path)
+        status = "FAIL" if errors else "OK"
+        print(f"{status}  {path}")
+        for e in errors:
+            print(f"  error: {e}")
+        for wa in warnings:
+            print(f"  note: {wa}")
+        if errors:
             exit_code = 1
     return exit_code
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:] or ["puzzles/test-klein.json"]))
+    sys.exit(main(sys.argv[1:] or ["puzzles/samples/test-small.json"]))
