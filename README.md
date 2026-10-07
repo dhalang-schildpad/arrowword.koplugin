@@ -8,15 +8,11 @@ an arrow pointing at the answer. They suit an e-ink screen well: one page, no
 scrolling, no time pressure.
 
 <p align="center">
-  <img src="docs/img/screenshot-nl-4star.png" alt="A four-star Dutch puzzle in the plugin (emulator screenshot)" width="420">
+  <img src="docs/img/photo-kobo-forma.jpg" alt="A four-star Dutch puzzle, partly solved, on a Kobo Forma" width="380">
+  &nbsp;
+  <img src="docs/img/screenshot-nl-4star.png" alt="The same kind of puzzle in the KOReader emulator" width="380">
 </p>
-
-<!-- Photo of the puzzle on a Kobo Forma: save it as docs/img/photo-kobo-forma.jpg and
-     uncomment the block below.
-<p align="center">
-  <img src="docs/img/photo-kobo-forma.jpg" alt="The same puzzle on a Kobo Forma" width="420">
-</p>
--->
+<p align="center"><sub>Left: on a Kobo Forma. Right: emulator screenshot.</sub></p>
 
 This repository is the plugin. The puzzles, the generator that makes them and
 the clue database live in
