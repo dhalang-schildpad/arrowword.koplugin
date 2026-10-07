@@ -132,11 +132,7 @@ function Arrowword:listDir(dir, rel)
                 end
             end
             total = total + 1
-            local text = puzzle.title
-            if puzzle.stars then
-                text = text .. "  " .. string.rep("★", puzzle.stars)
-            end
-            local item = { text = text, mandatory = status }
+            local item = { text = puzzle:displayTitle(), mandatory = status }
             item.callback = function() self:openPuzzle(path, key, item) end
             items[#items + 1] = item
         end

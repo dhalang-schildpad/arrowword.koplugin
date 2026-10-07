@@ -253,10 +253,7 @@ end
 
 function GameView:paintTitle(bb)
     local p = self.puzzle
-    local title_text = p.title
-    if p.stars then
-        title_text = title_text .. "  " .. string.rep("★", p.stars)
-    end
+    local title_text = p:displayTitle()
     local fh, asc = self.title_face.ftsize:getHeightAndAscender()
     local ty = math.floor((self.title_h - fh) / 2 + asc)
     RenderText:renderUtf8Text(bb, self.margin, ty, self.title_face, title_text, true, false, Blitbuffer.COLOR_BLACK, self.title_max_w)

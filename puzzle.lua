@@ -110,6 +110,16 @@ function Puzzle:fingerprint()
     return sum
 end
 
+--- Title for display: the stars are appended unless the title already shows
+-- them (generated titles look like "Zweeds 4★ #1").
+function Puzzle:displayTitle()
+    local title = self.title
+    if self.stars and not title:find("★", 1, true) then
+        title = title .. "  " .. string.rep("★", self.stars)
+    end
+    return title
+end
+
 function Puzzle:cellAt(x, y)
     local row = self.cells[y + 1]
     return row and row[x + 1] or nil

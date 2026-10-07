@@ -71,6 +71,15 @@ local r = Puzzle.new(json.decode(readFile(path)))
 r:setProgress(prog)
 check(r:countFilled() == 0, "progress of a different puzzle is ignored")
 
+-- title: stars appended once, never twice
+local d = json.decode(readFile(path))
+d.title, d.stars = "Zweeds 4★ #1", 4
+check(Puzzle.new(d):displayTitle() == "Zweeds 4★ #1", "no extra stars when the title shows them")
+d.title = "My puzzle"
+check(Puzzle.new(d):displayTitle() == "My puzzle  ★★★★", "stars appended to a plain title")
+d.stars = nil
+check(Puzzle.new(d):displayTitle() == "My puzzle", "no stars without a level")
+
 -- word navigation wraps around
 q:selectWord(q.words[#q.words], 1); q:nextWord(1)
 check(q.current.index == 1, "nextWord wraps around")
